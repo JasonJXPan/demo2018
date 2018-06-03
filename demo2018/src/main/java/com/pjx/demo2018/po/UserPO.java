@@ -1,11 +1,14 @@
 package com.pjx.demo2018.po;
 
+import java.io.Serializable;
+
 /**
  *
  * @author juqi
  * @date 18/5/26
  */
-public class UserPO {
+public class UserPO implements Serializable {
+    private static final long serialVersionUID = -8482864799163759525L;
     private Long id;
     private String username;
     private String password;
@@ -14,6 +17,11 @@ public class UserPO {
     }
 
     public UserPO(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    public UserPO(Long id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
     }
