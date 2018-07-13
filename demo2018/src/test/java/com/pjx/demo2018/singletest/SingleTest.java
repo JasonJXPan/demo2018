@@ -9,6 +9,14 @@ import java.util.Set;
 public class SingleTest {
 
     public static void main(String[] args) {
+        System.out.println(Boolean.TRUE.equals(null));
+        System.out.println(Boolean.TRUE.equals(true));
+        System.out.println(Boolean.TRUE.equals(false));
+        System.out.println(Boolean.FALSE.equals(null));
+        System.out.println(Boolean.FALSE.equals(false));
+        System.out.println(Boolean.FALSE.equals(true));
+
+
 //        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 //        Set<String> setA = new HashSet<>();
 //        Set<String> setB = new HashSet<>();
