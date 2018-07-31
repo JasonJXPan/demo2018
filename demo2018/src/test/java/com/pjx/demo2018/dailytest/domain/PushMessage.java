@@ -42,4 +42,25 @@ public class PushMessage {
                 ", userClientInfos=" + userClientInfos +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PushMessage that = (PushMessage) o;
+
+        if (messageTitle != null ? !messageTitle.equals(that.messageTitle) : that.messageTitle != null) return false;
+        if (messageContent != null ? !messageContent.equals(that.messageContent) : that.messageContent != null)
+            return false;
+        return userClientInfos != null ? userClientInfos.equals(that.userClientInfos) : that.userClientInfos == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = messageTitle != null ? messageTitle.hashCode() : 0;
+        result = 31 * result + (messageContent != null ? messageContent.hashCode() : 0);
+        result = 31 * result + (userClientInfos != null ? userClientInfos.hashCode() : 0);
+        return result;
+    }
 }
