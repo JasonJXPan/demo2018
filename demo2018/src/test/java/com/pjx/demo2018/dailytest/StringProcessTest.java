@@ -4,6 +4,8 @@ import com.pjx.demo2018.dailytest.util.StringProcessUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * Created by juqi on 18/7/30.
  */
@@ -39,5 +41,10 @@ public class StringProcessTest {
         return "StringProcessTest{}"+super.toString();
 //        toString方法内不能使用this, 会造成toString方法的循环调用, 出现java.lang.StackOverflowError
 //        return "StringProcessTest{}"+this;
+    }
+
+    @Test
+    public void test3() {
+        System.out.println(StringUtils.join(Arrays.asList("a", "b", "b"), ","));
     }
 }
