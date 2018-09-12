@@ -20,7 +20,7 @@ public class StreamTest {
 //        for (Character c : CONTENT.toCharArray()) {
 //            LIST.add(String.valueOf(c));
 //        }
-        for (int i=0; i<50000;i++) {
+        for (int i=0; i<500;i++) {
             LIST.add(i+"");
         }
     }
@@ -28,28 +28,34 @@ public class StreamTest {
     public void test1(){
         Long begin = Calendar.getInstance().getTimeInMillis();
         LIST.stream().forEach(item -> System.out.print(item));
+        System.out.println();
         System.out.println("stream().forEach:"+((Calendar.getInstance().getTimeInMillis()) - begin));
         begin = Calendar.getInstance().getTimeInMillis();
         LIST.stream().parallel().forEach(item -> System.out.print(item));
+        System.out.println();
         System.out.println("stream().parallel().forEach:"+((Calendar.getInstance().getTimeInMillis()) - begin));
         begin = Calendar.getInstance().getTimeInMillis();
         LIST.parallelStream().forEach(item -> System.out.print(item));
+        System.out.println();
         System.out.println("parallelStream().forEach:"+((Calendar.getInstance().getTimeInMillis()) - begin));
         begin = Calendar.getInstance().getTimeInMillis();
         for (String x : LIST) {
             System.out.print(x);
         }
+        System.out.println();
         System.out.println("iterator.forEach:"+((Calendar.getInstance().getTimeInMillis()) - begin));
         begin = Calendar.getInstance().getTimeInMillis();
         for (int i=0; i<LIST.size();i++) {
             System.out.print(LIST.get(i));
         }
+        System.out.println();
         System.out.println("standard.forEach:"+((Calendar.getInstance().getTimeInMillis()) - begin));
         begin = Calendar.getInstance().getTimeInMillis();
         Iterator<String> iterator = LIST.iterator();
         for (int i=0 ;i < LIST.size(); i++) {
             System.out.print(iterator.next());
         }
+        System.out.println();
         System.out.println("standard+iterator.forEach:"+((Calendar.getInstance().getTimeInMillis()) - begin));
     }
 

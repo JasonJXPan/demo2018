@@ -118,4 +118,46 @@ public class GsonTest {
 //
 //        The idiom used to get fooType actually defines an anonymous local inner class containing a method getType() that returns the fully parameterized type.
     }
+
+    @Test
+    public void test5() {
+        Set<String> orderIDs = new HashSet<>();
+        orderIDs.add("1");
+        orderIDs.add("2");
+        orderIDs.add("3");
+        orderIDs.add("4");
+        Map<String, Object> msg = new HashMap<>();
+        msg.put("a", orderIDs);
+        msg.put("myDate", null);
+        msg.put("myInteger", null);
+        try {
+            String s = new ObjectMapper().writeValueAsString(msg);
+            Map map = new ObjectMapper().readValue(s, Map.class);
+            List<String> list = (List<String>)map.get("a");
+            Date myDate = (Date) map.get("myDate");
+            Integer myInteger = (Integer) map.get("myInteger");
+            Integer myInteger1= Integer.getInteger((String)map.get("myInteger"));
+            System.out.println(list);
+            System.out.println(myDate);
+            System.out.println(myInteger);
+            System.out.println(myInteger1);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test6() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("date", Calendar.getInstance().getTime());
+        try {
+            String s = new ObjectMapper().writeValueAsString(map);
+            System.out.println(s);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

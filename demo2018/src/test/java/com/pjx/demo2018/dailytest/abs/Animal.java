@@ -8,9 +8,10 @@ public abstract class Animal {
     private String color;
 
     //抽象类中可以有构造器
-    public Animal(){}
+    public Animal() {
+    }
 
-    public static void intro(){
+    public static void intro() {
         System.out.println("I am animal");
     }
 
@@ -30,5 +31,13 @@ public abstract class Animal {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "name='" + name + '\'' +
+                ", color='" + color + '\'' +
+                '}';
     }
 }

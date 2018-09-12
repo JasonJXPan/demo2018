@@ -17,4 +17,19 @@ public class AbstractClassTest {
         dog.intro();
         new Dog();
     }
+
+    @Test
+    public void test2(){
+        Dog dog = new Dog();
+        dog.setAge(1);
+        dog.setName("dog-Doggy");
+        System.out.println(dog.introduce());
+    }
+
+    @Test
+    public void test3() {
+        Dog dog = new Dog();
+        dog.setAge(99);
+        dog.introduce();
+    }
 }

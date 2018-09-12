@@ -11,6 +11,7 @@ public class EnumTest {
     public void test1(){
         System.out.println(UnitTestStatusEnum.FAIL);
         System.out.println(UnitTestStatusEnum.valueOf("FAIL"));
+        System.out.println(UnitTestStatusEnum.valueOf(UnitTestStatusEnum.PASSED.name()));
         System.out.println(UnitTestStatusEnum.FAIL.name());
     }
 }
