@@ -37,6 +37,7 @@ public class DemoController {
     public String findMy2Properties(){
         return my2Properties.toString();
     }
+
     @RequestMapping(value = "/check", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
     produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Object createTest(@RequestBody List<Mytest> mytest) {
@@ -45,5 +46,15 @@ public class DemoController {
 //        System.out.println(mytest.get(1).getName());
 //        System.out.println(mytest.get(1).getAddress());
         return null;
+    }
+
+    @RequestMapping(value = "/test/{value}", method = RequestMethod.GET)
+    public String testGet1(@PathVariable("value") String value){
+        return value+"value";
+    }
+
+    @RequestMapping(value = "/test/health_check/a", method = RequestMethod.GET)
+    public String testGet1(){
+        return "test1";
     }
 }

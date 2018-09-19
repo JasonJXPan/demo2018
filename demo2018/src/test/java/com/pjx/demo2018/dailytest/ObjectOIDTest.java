@@ -16,6 +16,8 @@ public class ObjectOIDTest {
 
     @Test
     public void test2(){
-        System.out.println(UUID.randomUUID().toString().replace("-", ""));
+        System.out.println(UUID.randomUUID().toString().replace("-", "").length());
+        System.out.println(UUID.randomUUID().toString().replace("-", "").length());
+        System.out.println(UUID.randomUUID().toString().replace("-", "").length());
     }
 }
