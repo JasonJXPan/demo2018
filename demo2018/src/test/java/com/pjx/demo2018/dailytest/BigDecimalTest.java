@@ -30,7 +30,7 @@ public class BigDecimalTest {
 
     @Test
     public void test3() {
-        BigDecimal bigDecimal1 = new BigDecimal(10L);
-
+        BigDecimal bigDecimal1 = new BigDecimal(10.5D);
+        System.out.println(bigDecimal1.toString());
     }
 }
