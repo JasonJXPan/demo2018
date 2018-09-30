@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pjx.demo2018.dailytest.domain.PushMessage;
-import com.pjx.demo2018.dailytest.domain.TreeSetObj;
-import com.pjx.demo2018.dailytest.domain.UserClientInfo;
+import com.pjx.demo2018.dailytest.domain.*;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -159,5 +157,22 @@ public class GsonTest {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void test7(){
+        String jsonStr = "";
+
+        Gson gson = new Gson();
+
+        JsonRootBean jsonRootBean = gson.fromJson(jsonStr, JsonRootBean.class);
+        JsonRootBeanParam param = gson.fromJson(jsonRootBean.getParams(), JsonRootBeanParam.class);
+        String template = jsonRootBean.getTemplate().replace("VERIFY_CODE", jsonRootBean.getVerifyCode()).replace("ORIGINAL_PRICE", jsonRootBean.getOriginalPrice()+"票面")
+                .replace("TICKET_QTY", jsonRootBean.getQty()+"").replace("TICKET_UNIT", "张").replace("SHOW_NAME", param.getSHOW_NAME())
+                .replace("SHOW_TIME", param.getSHOW_TIME()+"").replace("VENUE_NAME", param.getVENUE_NAME()).replace("ARRIVE_TIME", param.getARRIVE_TIME())
+                .replace("ADDRESS", param.getADDRESS()).replace("VENUE_CONTACT", param.getVENUE_CONTACT()).replace("SELLER_PHONE", param.getSELLER_PHONE())
+                .replace("TIPS", param.getTIPS()).replace("CODEURL", "https://q.abc.cn/"+jsonRootBean.getPurchaseOrderOID());
+//        template = jsonRootBean.getTemplate().replace("VERIFY_CODE", jsonRootBean.getVerifyCode());
+        System.out.println("订单id："+jsonRootBean.getOrderOID()+"-用户手机号" + jsonRootBean.getBuyerPhone()+ "-短信内容-"+template);
     }
 }

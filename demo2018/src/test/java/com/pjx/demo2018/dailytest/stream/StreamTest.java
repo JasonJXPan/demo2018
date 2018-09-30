@@ -3,10 +3,9 @@ package com.pjx.demo2018.dailytest.stream;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 结论1：stream()方法不能随便用 可能效率很低， 而且有大小限制
@@ -61,6 +60,17 @@ public class StreamTest {
 
     @Test
     public void test2(){
+        Stream<String> names = Stream.of("Lamurudu", "Okanbi", "Oduduwa");
+        Optional<String> longest = names
+                .filter(name -> name.startsWith("L"))
+                .findFirst();
+
+        List<String> list = Arrays.asList("1", "2", "3");
+        list.forEach(x -> System.out.println(x));
+        Stream<String> stringStream = list.stream().filter(x -> x.equals("1"));
+        System.out.println(stringStream.findAny());
+        List<String> collect = list.stream().filter(x -> x.equals("1")|| x.equals("2")).collect(Collectors.toList());
+        System.out.println(collect);
 
     }
 

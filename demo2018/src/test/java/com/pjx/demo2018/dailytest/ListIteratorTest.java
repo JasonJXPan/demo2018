@@ -1,13 +1,10 @@
 package com.pjx.demo2018.dailytest;
 
-import com.pjx.demo2018.dailytest.abs.Animal;
 import com.pjx.demo2018.dailytest.abs.impl.Dog;
-import com.sun.tools.corba.se.idl.constExpr.And;
 import org.junit.Test;
 
-import javax.sound.midi.Soundbank;
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -115,5 +112,44 @@ public class ListIteratorTest {
     }
     public void changeDog(Dog dogFrom, Dog dog){
         dogFrom = dog;
+    }
+
+    @Test
+    public void test5(){
+        List<String> list = Arrays.asList("1", "2");
+        System.out.println(list);
+        abc(list);
+        System.out.println(list);
+        //Arrays.asList 使用工具类 Arrays.asList()把数组转换成集合时，不能使用其修改集合相关的方
+//        法，它的 add/remove/clear 方法会抛出 UnsupportedOperationException 异常。
+//        说明： asList 的返回对象是一个 Arrays 内部类，并没有实现集合的修改方法。Arrays.asList
+//        体现的是适配器模式，只是转换接口，后台的数据仍是数组
+//        list.add("3");
+//        System.out.println(list);
+    }
+    public void abc(List<String> list){
+        list.add("4");
+    }
+
+    @Test
+    public void test6(){
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        //会报错 java.util.ConcurrentModificationException
+//        for (String x : list) {
+//            if ("1".equals(x)) {
+//                list.remove(x);
+//            }
+//        }
+        Iterator<String> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            String x = iterator.next();
+            if (x.equals("1")) {
+                iterator.remove();
+            }
+        }
+        System.out.println(list);
     }
 }
