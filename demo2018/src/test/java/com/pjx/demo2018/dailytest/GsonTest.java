@@ -3,6 +3,7 @@ package com.pjx.demo2018.dailytest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pjx.demo2018.dailytest.domain.*;
 import org.junit.Test;
@@ -174,5 +175,18 @@ public class GsonTest {
                 .replace("TIPS", param.getTIPS()).replace("CODEURL", "https://q.abc.cn/"+jsonRootBean.getPurchaseOrderOID());
 //        template = jsonRootBean.getTemplate().replace("VERIFY_CODE", jsonRootBean.getVerifyCode());
         System.out.println("订单id："+jsonRootBean.getOrderOID()+"-用户手机号" + jsonRootBean.getBuyerPhone()+ "-短信内容-"+template);
+    }
+
+    @Test
+    public void test8(){
+        String x ="{showOID=5b3dade0c756b113c84ae3f4, sellerType=business, sellerOID=5b2cafd4069b3e7aa44384f0, facadeSellerOID=5b2cafd4069b3e7aa44384f0, facadeSellerNickName=北京小红帽票务, facadeBusinessLicenseFile=\"\"}";
+
+        System.out.println(x.charAt(x.length()-2));
+        x = x.replace("/", "").replace(":", "").replace("_","");
+        Gson gson = new Gson();
+        gson.fromJson(x, SellerShowCertificationDTO.class);
+
+
+        Arrays.asList("[  {    \"orderItemOID\": \"5bb47346e4b0b7858c139db3\",    \"showOID\": \"5b332f58908c38706b47e509\",    \"sellerOID\": \"59c20a3a0cf2a38f4825523b\"  }]","[  {    \"orderItemOID\": \"5bb4880de4b009ffefa60296\",    \"showOID\": \"5bb06cf5908c3856d692423b\",    \"sellerOID\": \"5848c5fb0cf279ca67a3a91c\"  }]","[  {    \"orderItemOID\": \"5bb4a79be4b0b7858c1612ed\",    \"showOID\": \"5b67e4bc908c38543ff24b4d\",    \"sellerOID\": \"5a3672d1e4b0eb06e56c8336\"  }]","[  {    \"orderItemOID\": \"5bb4c849e4b009ffefa8d808\",    \"showOID\": \"5b9b6399c756b162a9c6044a\",    \"sellerOID\": \"5833f5b90cf286628fafe345\"  }]","[  {    \"orderItemOID\": \"5bb4e391e4b009ffefa9f368\",    \"showOID\": \"5bb0f6eac756b1616d8b7743\",    \"sellerOID\": \"5bb065dc069b3e0315a210c2\"  }]");
     }
 }

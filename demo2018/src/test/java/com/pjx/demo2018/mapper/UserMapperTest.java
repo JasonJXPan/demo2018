@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class UserMapperTest {
         logger.info("[添加结果] - [{}]", row2);
         final int row3 = userMapper.insert(new UserPO("u1", "p3"));
         logger.info("[添加结果] - [{}]", row3);
-        final List<UserPO> u1 = userMapper.findByUsername("u1");
+        final List<UserPO> u1 = userMapper.findByUsername("u1", new ArrayList<>());
         logger.info("[根据用户名查询] - [{}]", u1);
     }
 
@@ -72,8 +73,8 @@ public class UserMapperTest {
 //                userMapper.findByUsername("user1");
 //            }
 //        });
-        PageHelper.offsetPage(2, 10);
-        final PageInfo<UserPO> userPageInfo = new PageInfo<>(this.userMapper.findByUsername("user1"));
+        PageHelper.offsetPage(2, 10, true);
+        final PageInfo<UserPO> userPageInfo = new PageInfo<>(this.userMapper.findByUsername("user1", new ArrayList<>()));
         logger.info("[普通写法] - [{}]", userPageInfo);
         for (UserPO item : userPageInfo.getList()) {
             logger.info(item.getId()+":"+item.getUsername());

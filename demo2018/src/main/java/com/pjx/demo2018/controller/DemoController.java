@@ -3,6 +3,8 @@ package com.pjx.demo2018.controller;
 import com.pjx.demo2018.config.FavorProperties;
 import com.pjx.demo2018.config.My2Properties;
 import com.pjx.demo2018.po.Mytest;
+import com.pjx.demo2018.vo.MyPost;
+import com.pjx.demo2018.vo.MyPostXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -56,5 +58,15 @@ public class DemoController {
     @RequestMapping(value = "/test/health_check/a", method = RequestMethod.GET)
     public String testGet1(){
         return "test1";
+    }
+
+    @RequestMapping(value = "/my_post", method = RequestMethod.POST ,produces = MediaType.APPLICATION_XML_VALUE)
+    public MyPostXML myPost(){
+//        MyPost myPost = new MyPost();
+//        myPost.setX("x");
+//        myPost.setY("Y");
+        MyPostXML myPost = new MyPostXML();
+        myPost.setReturn_code("123");
+        return myPost;
     }
 }

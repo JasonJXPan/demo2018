@@ -20,8 +20,19 @@ public interface UserMapper {
      * @param username 用户名
      * @return 查询结果
      */
-    @Select("SELECT * FROM t_user WHERE username = #{username} order by id desc")
-    List<UserPO> findByUsername(@Param("username") String username);
+    @Select("<script>SELECT username,id FROM t_user " +
+            "WHERE 1=1 " +
+            "<if test='username != null'>" +
+            " AND username = #{username} " +
+            "</if> " +
+            "<if test='list != null and list.size >0'>" +
+            " <foreach index='index' item='item' open='(' close=')' separator=',' >" +
+            "   #{item}" +
+            " </foreach>" +
+            "</if>"  +
+            " order by id desc </script>")
+    List<UserPO> findByUsername(@Param("username") String username,
+                                @Param("list") List<String> list);
 
 
     /**

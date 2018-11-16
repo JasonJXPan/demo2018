@@ -2,8 +2,7 @@ package com.pjx.demo2018.dailytest;
 
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by juqi on 18/9/25.
@@ -17,5 +16,13 @@ public class CollectionTest {
         all.add("B");
         all.removeAll(set);
         System.out.println(all);
+    }
+    @Test
+    public void test2(){
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        System.out.println(list);
+        list.addAll(Collections.emptyList());
+        System.out.println(list);
     }
 }

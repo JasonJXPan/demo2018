@@ -33,4 +33,38 @@ public class BigDecimalTest {
         BigDecimal bigDecimal1 = new BigDecimal(10.5D);
         System.out.println(bigDecimal1.toString());
     }
+
+    @Test
+    public void test4() {
+        System.out.println(Math.random());
+        BigDecimal successRate = add(new BigDecimal("85.00"), Math.random() * 10 % 2);
+        System.out.println(round(successRate, 2));
+    }
+    public static BigDecimal add(Number v1, Number v2) {
+        BigDecimal b1 = new BigDecimal(v1==null?"0":v1+"");
+        BigDecimal b2 = new BigDecimal(v2==null?"0":v2+"");
+        return b1.add(b2);
+    }
+    public static BigDecimal round(BigDecimal v, int scale) {
+        if (scale < 0) {
+            throw new IllegalArgumentException(
+
+                    "The scale must be a positive integer or zero");
+        }
+        BigDecimal one = new BigDecimal("1");
+        return v.divide(one, scale, BigDecimal.ROUND_HALF_UP);
+    }
+
+    @Test
+    public void test5() {
+        System.out.println((Math.random() * 10 ));
+        System.out.println(Math.random() );
+        BigDecimal RATE_A = new BigDecimal("15.00");
+        BigDecimal result = RATE_A.add(new BigDecimal(Math.random()));
+        System.out.println(result);
+        BigDecimal RATE_B = new BigDecimal("80.00");
+        BigDecimal result1 = RATE_B.add(new BigDecimal(Math.random() * 10 ));
+        System.out.println(result1);
+        System.out.println(""+true);
+    }
 }

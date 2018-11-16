@@ -24,4 +24,9 @@ public class StringBuilderTest {
             System.out.println(i);
         }
     }
+    @Test
+    public void testSubString(){
+        String a = "this is Jason";
+        System.out.println(a.substring(1, 3));
+    }
 }
