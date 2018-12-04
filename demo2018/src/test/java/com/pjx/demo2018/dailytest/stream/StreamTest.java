@@ -1,5 +1,7 @@
 package com.pjx.demo2018.dailytest.stream;
 
+import com.pjx.demo2018.dailytest.stream.dto.StreamTestDTO;
+import com.pjx.demo2018.dailytest.stream.po.StreamTestPO;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,6 +72,35 @@ public class StreamTest {
         Stream<String> stringStream = list.stream().filter(x -> x.equals("1"));
         System.out.println(stringStream.findAny());
         List<String> collect = list.stream().filter(x -> x.equals("1")|| x.equals("2")).collect(Collectors.toList());
+        System.out.println(collect);
+
+    }
+
+    @Test
+    public void test3() {
+        Stream<String> a = Stream.of("a", "a", "b", "v");
+        Set<String> collect = a.collect(Collectors.toSet());
+        System.out.println(collect);
+        Stream<String> a1 = Stream.of("a", "a", "b", "v");
+        Stream<String> distinct = a1.distinct();
+        List<String> collect1 = distinct.collect(Collectors.toList());
+        System.out.println(collect1);
+
+    }
+
+    @Test
+    public void test4() {
+        List<StreamTestPO> pos = new ArrayList<>();
+        StreamTestPO po1 = new StreamTestPO();
+        po1.setOrderId("order1");
+        po1.setShowId("show1");
+        StreamTestPO po2 = new StreamTestPO();
+        po2.setOrderId("order2");
+        po2.setShowId("show2");
+        pos.add(po1);
+        pos.add(po2);
+
+        List<StreamTestDTO> collect = pos.parallelStream().map(StreamTestDTO::new).collect(Collectors.toList());
         System.out.println(collect);
 
     }

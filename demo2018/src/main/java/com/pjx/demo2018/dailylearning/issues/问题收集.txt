@@ -1,0 +1,2 @@
+如果mybatis中的sql没有写对，比如<foreach>中没有指定collection参数，那么会报NPE
+

@@ -2,7 +2,9 @@ package com.pjx.demo2018.controller;
 
 import com.pjx.demo2018.config.FavorProperties;
 import com.pjx.demo2018.config.My2Properties;
+import com.pjx.demo2018.mapper.UserMapper;
 import com.pjx.demo2018.po.Mytest;
+import com.pjx.demo2018.po.PurchPo;
 import com.pjx.demo2018.vo.MyPost;
 import com.pjx.demo2018.vo.MyPostXML;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import java.util.List;
  */
 @RestController
 public class DemoController {
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private FavorProperties favorProperties;
@@ -68,5 +73,14 @@ public class DemoController {
         MyPostXML myPost = new MyPostXML();
         myPost.setReturn_code("123");
         return myPost;
+    }
+
+    @RequestMapping(value = "/secret", method = RequestMethod.GET)
+    public PurchPo find() {
+        PurchPo byId = userMapper.findById();
+        System.out.println(byId.getOverdue());
+        System.out.println(byId.getOverdue().getTime());
+        System.out.println(byId.getId());
+        return byId;
     }
 }

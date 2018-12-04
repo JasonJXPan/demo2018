@@ -3,6 +3,8 @@ package com.pjx.demo2018.dailytest;
 import com.pjx.demo2018.dailytest.util.ObjectOIDUtil;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,8 +23,20 @@ public class ObjectOIDTest {
         System.out.println(UUID.randomUUID().toString().replace("-", "").length());
         System.out.println(UUID.randomUUID().toString().replace("-", "").length());
         System.out.println(UUID.randomUUID().toString().replace("-", "").length());
+        String a = "a";
+        String b = "b";
+        List<String> list = new ArrayList<>();
+        list.add(a);
+        list.add(b);
+        System.out.println(list.contains("a"));
+        System.out.println(list.contains("a1"));
+        long x = 0L;
+        x = test111();
     }
 
+    public Long test111(){
+        return null;
+    }
     @Test
     public void test3(){
         int a = 1;

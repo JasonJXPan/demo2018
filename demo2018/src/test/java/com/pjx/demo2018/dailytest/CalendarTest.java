@@ -20,4 +20,12 @@ public class CalendarTest {
         c.set(Calendar.SECOND, 59);
         System.out.println(c.getTime());
     }
+
+    @Test
+    public void test1() {
+        Calendar current = Calendar.getInstance();
+        System.out.println(current.getTime());
+        current.set(Calendar.HOUR_OF_DAY, current.get(Calendar.HOUR_OF_DAY )-1);
+        System.out.println(current.getTime());
+    }
 }
