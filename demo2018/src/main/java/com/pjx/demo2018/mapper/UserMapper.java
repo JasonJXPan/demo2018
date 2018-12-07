@@ -1,5 +1,6 @@
 package com.pjx.demo2018.mapper;
 
+import com.pjx.demo2018.po.PurchPo;
 import com.pjx.demo2018.po.UserPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,6 +15,12 @@ import java.util.List;
  */
 @Mapper
 public interface UserMapper {
+
+
+    @Select("select t.orderOID as id, t.overdue_deadline as overdue from tm_purchase_order t where t.orderNumber='8118011181698'")
+    PurchPo findById();
+
+
     /**
      * 根据用户名查询用户结果集
      *

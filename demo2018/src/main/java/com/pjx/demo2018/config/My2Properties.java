@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 public class My2Properties {
     private String name;
     private int count;
+    private String random;
+    private int random_int;
+    private int randomInt;
 
     public String getName() {
         return name;
@@ -31,11 +34,38 @@ public class My2Properties {
         this.count = count;
     }
 
+    public String getRandom() {
+        return random;
+    }
+
+    public void setRandom(String random) {
+        this.random = random;
+    }
+
+    public int getRandom_int() {
+        return random_int;
+    }
+
+    public void setRandom_int(int random_int) {
+        this.random_int = random_int;
+    }
+
+    public int getRandomInt() {
+        return randomInt;
+    }
+
+    public void setRandomInt(int randomInt) {
+        this.randomInt = randomInt;
+    }
+
     @Override
     public String toString() {
         return "My2Properties{" +
                 "name='" + name + '\'' +
                 ", count=" + count +
+                ", random='" + random + '\'' +
+                ", random_int=" + random_int +
+                ", randomInt=" + randomInt +
                 '}';
     }
 }

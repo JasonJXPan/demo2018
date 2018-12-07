@@ -42,6 +42,8 @@ public class DemoController {
 
     @GetMapping(value = "/my2_properties")
     public String findMy2Properties(){
+        System.out.println(my2Properties.getRandom_int());
+        System.out.println(my2Properties.getRandomInt());
         return my2Properties.toString();
     }
 

@@ -85,4 +85,11 @@ public class StringProcessTest {
         boolean result = true && false || true && false;
         System.out.println(result);
     }
+
+    @Test
+    public void test7() {
+        String a = "123";
+        String b = "123";
+        System.out.println(a==b);
+    }
 }

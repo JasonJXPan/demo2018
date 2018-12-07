@@ -1,5 +1,6 @@
 package com.pjx.demo2018.dailytest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 /**
@@ -28,5 +29,18 @@ public class StringBuilderTest {
     public void testSubString(){
         String a = "this is Jason";
         System.out.println(a.substring(1, 3));
+    }
+    @Test
+    public void test2(){
+        StringBuilder stringBuilder = new StringBuilder();
+        String x = null;
+        String x1 = "1";
+        stringBuilder.append(x).append("a").append(1);
+        String value = x+x1;
+        System.out.println(value);
+//        System.out.println(x.toString());
+
+        Integer a = null;
+        System.out.println(String.valueOf(a));
     }
 }
