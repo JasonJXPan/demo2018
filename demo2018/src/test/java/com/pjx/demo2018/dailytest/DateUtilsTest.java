@@ -3,9 +3,12 @@ package com.pjx.demo2018.dailytest;
 import com.juqitech.service.utils.DateUtils;
 import org.junit.Test;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by juqi on 18/10/18.
@@ -35,4 +38,40 @@ public class DateUtilsTest {
 
         System.out.println(new Date(4070908800000L));
     }
+
+    public static long getDiffHours(Date one, Date two) {
+        GregorianCalendar sysDate = new GregorianCalendar();
+        sysDate.setTime(one);
+        GregorianCalendar failDate = new GregorianCalendar();
+        failDate.setTime(two);
+        return (sysDate.getTimeInMillis() - failDate.getTimeInMillis()) / 3600000L;
+    }
+    public static long getDiffMinutes(Date one, Date two) {
+        GregorianCalendar sysDate = new GregorianCalendar();
+        sysDate.setTime(one);
+        GregorianCalendar failDate = new GregorianCalendar();
+        failDate.setTime(two);
+        return (sysDate.getTimeInMillis() - failDate.getTimeInMillis()) / 60000L;
+    }
+
+    @Test
+    public void test2() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date parse = null;
+        try {
+            parse = dateFormat.parse("2019-01-03 07:50:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
+
+        Calendar calendarParse = Calendar.getInstance();
+        calendarParse.setTime(parse);
+
+        System.out.println(getDiffMinutes(calendarParse.getTime(), currentDate));
+        System.out.println(getDiffHours(calendarParse.getTime(), currentDate));
+    }
+
+
 }

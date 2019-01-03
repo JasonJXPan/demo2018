@@ -1,2 +1,6 @@
-如果mybatis中的sql没有写对，比如<foreach>中没有指定collection参数，那么会报NPE
+##如果mybatis中的sql没有写对，比如<foreach>中没有指定collection参数，那么会报NPE
 
+##错误：QueryMap parameter must be a Map: int
+spring-cloud-feign处理@RequestParam和Spring MVC的不一样，Spring MVC在@RequestParam的value为空的时候反射得到参数的名字作为value。
+
+解决方案: 给@RequestParam加上value，或者其它参数不要，就只保留字符串。

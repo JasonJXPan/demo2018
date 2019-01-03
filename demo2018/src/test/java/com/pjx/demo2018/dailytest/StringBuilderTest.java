@@ -1,6 +1,8 @@
 package com.pjx.demo2018.dailytest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.Test;
 
 /**
@@ -42,5 +44,73 @@ public class StringBuilderTest {
 
         Integer a = null;
         System.out.println(String.valueOf(a));
+    }
+
+    @Test
+    public void test3(){
+        RowsGroupBaseDTO baseDTO = new RowsGroupBaseDTO();
+        baseDTO.setRowStart(4);
+        baseDTO.setRowEnd(6);
+        RowsGroupBaseDTO rowsGroupBaseDTO = RowsGroupGenerate.generateRowsGroupName(baseDTO);
+        System.out.println(rowsGroupBaseDTO.getRowsGroupName());
+    }
+
+
+
+    class RowsGroupBaseDTO {
+        private Integer row;
+        private Integer rowStart;
+        private Integer rowEnd;
+        private String rowsGroupName;
+
+        public RowsGroupBaseDTO() {
+        }
+
+        public Integer getRow() {
+            return this.row;
+        }
+
+        public void setRow(Integer row) {
+            this.row = row;
+        }
+
+        public Integer getRowStart() {
+            return this.rowStart;
+        }
+
+        public void setRowStart(Integer rowStart) {
+            this.rowStart = rowStart;
+        }
+
+        public Integer getRowEnd() {
+            return this.rowEnd;
+        }
+
+        public void setRowEnd(Integer rowEnd) {
+            this.rowEnd = rowEnd;
+        }
+
+        public String getRowsGroupName() {
+            return this.rowsGroupName;
+        }
+
+        public void setRowsGroupName(String rowsGroupName) {
+            this.rowsGroupName = rowsGroupName;
+        }
+
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        }
+    }
+}
+class RowsGroupGenerate {
+    public static StringBuilderTest.RowsGroupBaseDTO generateRowsGroupName(StringBuilderTest.RowsGroupBaseDTO rowsGroupBaseDTO) {
+        StringBuilder rowsGroupName = (new StringBuilder()).append(rowsGroupBaseDTO.getRowStart());
+        if(rowsGroupBaseDTO.getRowStart().intValue() > 3) {
+            rowsGroupName = (new StringBuilder()).append(rowsGroupBaseDTO.getRowStart()).append("-").append(rowsGroupBaseDTO.getRowEnd());
+        }
+
+        rowsGroupBaseDTO.setRowsGroupName(rowsGroupName.append("排").toString());
+        return rowsGroupBaseDTO;
     }
 }

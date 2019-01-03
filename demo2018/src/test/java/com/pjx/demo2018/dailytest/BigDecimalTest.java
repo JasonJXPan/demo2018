@@ -67,4 +67,24 @@ public class BigDecimalTest {
         System.out.println(result1);
         System.out.println(""+true);
     }
+
+    @Test
+    public void test6() {
+        BigDecimal bigDecimal = new BigDecimal("0.5");
+        BigDecimal bigDecimal1 = new BigDecimal("10");
+        BigDecimal[] bigDecimals = bigDecimal.divideAndRemainder(bigDecimal1);
+        for (BigDecimal a : bigDecimals) {
+            System.out.println(a);
+            System.out.println(a.compareTo(BigDecimal.ZERO)==0);
+        }
+    }
+    @Test
+    public void test7() {
+        BigDecimal bigDecimal = new BigDecimal("2");
+        BigDecimal bigDecimal1 = new BigDecimal("5");
+        BigDecimal bigDecimal2 = new BigDecimal("8");
+        BigDecimal multiply = bigDecimal1.subtract(bigDecimal).multiply(bigDecimal2);
+        System.out.println(multiply);
+
+    }
 }

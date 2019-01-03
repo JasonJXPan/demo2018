@@ -7,10 +7,12 @@ import com.pjx.demo2018.po.Mytest;
 import com.pjx.demo2018.po.PurchPo;
 import com.pjx.demo2018.vo.MyPost;
 import com.pjx.demo2018.vo.MyPostXML;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -84,5 +86,30 @@ public class DemoController {
         System.out.println(byId.getOverdue().getTime());
         System.out.println(byId.getId());
         return byId;
+    }
+
+    @RequestMapping(value = "/test-obj", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void testObj(@RequestBody Mytest a) {
+        System.out.println(a.getName());
+    }
+
+    class A {
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public A(){}
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("name", name)
+                    .toString();
+        }
     }
 }

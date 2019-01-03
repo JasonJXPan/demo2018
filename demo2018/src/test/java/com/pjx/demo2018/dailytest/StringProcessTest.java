@@ -92,4 +92,16 @@ public class StringProcessTest {
         String b = "123";
         System.out.println(a==b);
     }
+
+    @Test
+    public void test8() {
+        String a = "a";
+        String b = null;
+        int c = 4;
+        String d = "d";
+        String e = "e";
+        Object[] objects = new Object[]{a ,b, c, d, e};
+        System.out.println(StringUtils.join(a, b, c, d, e));
+        System.out.println(StringUtils.join(objects, "-"));
+    }
 }

@@ -24,4 +24,12 @@ public class PurchPo {
     public void setOverdue(Date overdue) {
         this.overdue = overdue;
     }
+
+    @Override
+    public String toString() {
+        return "PurchPo{" +
+                "id='" + id + '\'' +
+                ", overdue=" + overdue +
+                '}';
+    }
 }

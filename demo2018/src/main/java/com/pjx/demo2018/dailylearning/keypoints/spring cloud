@@ -1,0 +1,107 @@
+http://www.spring4all.com/article/291
+Spring Cloud Eureka
+
+首先，我们来尝试使用Spring Cloud Eureka来实现服务治理。
+
+Spring Cloud Eureka是Spring Cloud Netflix项目下的服务治理模块。而Spring Cloud Netflix项目是Spring Cloud的子项目之一，主要内容是对Netflix公司一系列开源产品的包装，它为Spring Boot应用提供了自配置的Netflix OSS整合。通过一些简单的注解，开发者就可以快速的在应用中配置一下常用模块并构建庞大的分布式系统。它主要提供的模块包括：服务发现（Eureka），断路器（Hystrix），智能路由（Zuul），客户端负载均衡（Ribbon）等。
+
+Eureka 和 consul都可以用来做服务发现
+
+Ribbon可以做负载均衡，使用spring cloud的LoadBalancerClient 也可以实现负载，
+基于ribbon和LoadBalancerClient都可以做服务消费
+feign是基于Ribbon的负载均衡做的服务消费
+        @GetMapping("/comsumer")
+        public String comsumer() {
+            ServiceInstance serviceInstance = loadBalancerClient.choose("pjx-eureka-client");
+            String url = "http://"+serviceInstance.getHost()+":"+serviceInstance.getPort()+"/dc";
+            System.out.println(url);
+            return restTemplate.getForObject(url, String.class);
+        }
+        @GetMapping("/comsumer_ribbon")
+        public String comsumerRibbon() {
+            return "ribbon" + loadBalanceRestTemplate.getForObject("http://pjx-flex-to-eureka-consul-client/dc", String.class);
+        }
+
+在微服务架构中，我们将系统拆分成了一个个的服务单元，各单元应用间通过服务注册与订阅的方式互相依赖。由于每个单元都在不同的进程中运行，依赖通过远程调用的方式执行，这样就有可能因为网络原因或是依赖服务自身问题出现调用故障或延迟，而这些问题会直接导致调用方的对外服务也出现延迟，若此时调用方的请求不断增加，最后就会出现因等待出现故障的依赖方响应而形成任务积压，线程资源无法释放，最终导致自身服务的瘫痪，进一步甚至出现故障的蔓延最终导致整个系统的瘫痪。如果这样的架构存在如此严重的隐患，那么相较传统架构就更加的不稳定。为了解决这样的问题，因此产生了断路器等一系列的服务保护机制。
+
+针对上述问题，在Spring Cloud Hystrix中实现了线程隔离、断路器等一系列的服务保护功能。它也是基于Netflix的开源框架 Hystrix实现的，该框架目标在于通过控制那些访问远程系统、服务和第三方库的节点，从而对延迟和故障提供更强大的容错能力。Hystrix具备了服务降级、服务熔断、线程隔离、请求缓存、请求合并以及服务监控等强大功能。
+
+@HystrixCommand 或者实现HystrixCommand 来做到服务降级
+
+Hystrix 依赖隔离
+    “舱壁模式”对于熟悉Docker的读者一定不陌生，Docker通过“舱壁模式”实现进程的隔离，使得容器与容器之间不会互相影响。而Hystrix则使用该模式实现线程池的隔离，它会为每一个Hystrix命令创建一个独立的线程池，这样就算某个在Hystrix命令包装下的依赖服务出现延迟过高的情况，也只是对该依赖服务的调用产生影响，而不会拖慢其他的服务。
+
+    通过对依赖服务的线程池隔离实现，可以带来如下优势：
+
+        应用自身得到完全的保护，不会受不可控的依赖服务影响。即便给依赖服务分配的线程池被填满，也不会影响应用自身的额其余部分。
+        可以有效的降低接入新服务的风险。如果新服务接入后运行不稳定或存在问题，完全不会影响到应用其他的请求。
+        当依赖的服务从失效恢复正常后，它的线程池会被清理并且能够马上恢复健康的服务，相比之下容器级别的清理恢复速度要慢得多。
+        当依赖的服务出现配置错误的时候，线程池会快速的反应出此问题（通过失败次数、延迟、超时、拒绝等指标的增加情况）。同时，我们可以在不影响应用功能的情况下通过实时的动态属性刷新（后续会通过Spring Cloud Config与Spring Cloud Bus的联合使用来介绍）来处理它。
+        当依赖的服务因实现机制调整等原因造成其性能出现很大变化的时候，此时线程池的监控指标信息会反映出这样的变化。同时，我们也可以通过实时动态刷新自身应用对依赖服务的阈值进行调整以适应依赖方的改变。
+        除了上面通过线程池隔离服务发挥的优点之外，每个专有线程池都提供了内置的并发实现，可以利用它为同步的依赖服务构建异步的访问。
+
+    总之，通过对依赖服务实现线程池隔离，让我们的应用更加健壮，不会因为个别依赖服务出现问题而引起非相关服务的异常。同时，也使得我们的应用变得更加灵活，可以在不停止服务的情况下，配合动态配置刷新实现性能配置上的调整。
+
+    Hystrix 的隔离策略参数execution.isolation.strategy有两种
+    public static enum ExecutionIsolationStrategy {
+        THREAD, //线程池
+        SEMAPHORE; //信号量
+
+        private ExecutionIsolationStrategy() {
+        }
+    }
+    Hystrix中除了使用线程池之外，还可以使用信号量来控制单个依赖服务的并发度，信号量的开销要远比线程池的开销小得多，但是它不能设置超时和实现异步访问。所以，只有在依赖服务是足够可靠的情况下才使用信号量。在HystrixCommand和HystrixObservableCommand中2处支持信号量的使用：
+
+        命令执行：如果隔离策略参数execution.isolation.strategy设置为SEMAPHORE，Hystrix会使用信号量替代线程池来控制依赖服务的并发控制。
+        降级逻辑：当Hystrix尝试降级逻辑时候，它会在调用线程中使用信号量。
+
+    信号量的默认值为10，我们也可以通过动态刷新配置的方式来控制并发线程的数量。对于信号量大小的估算方法与线程池并发度的估算类似。仅访问内存数据的请求一般耗时在1ms以内，性能可以达到5000rps，这样级别的请求我们可以将信号量设置为1或者2，我们可以按此标准并根据实际请求耗时来设置信号量。
+
+Hystrix 断路器
+
+断路器
+
+断路器模式源于Martin Fowler的Circuit Breaker一文。“断路器”本身是一种开关装置，用于在电路上保护线路过载，当线路中有电器发生短路时，“断路器”能够及时的切断故障电路，防止发生过载、发热、甚至起火等严重后果。
+
+在分布式架构中，断路器模式的作用也是类似的，当某个服务单元发生故障（类似用电器发生短路）之后，通过断路器的故障监控（类似熔断保险丝），直接切断原来的主逻辑调用。但是，在Hystrix中的断路器除了切断主逻辑的功能之外，还有更复杂的逻辑，下面我们来看看它更为深层次的处理逻辑。
+
+断路器是在什么情况下开始起作用呢？这里涉及到断路器的三个重要参数：快照时间窗、请求总数下限、错误百分比下限。这个参数的作用分别是：
+
+    快照时间窗：断路器确定是否打开需要统计一些请求和错误数据，而统计的时间范围就是快照时间窗，默认为最近的10秒。
+    请求总数下限：在快照时间窗内，必须满足请求总数下限才有资格根据熔断。默认为20，意味着在10秒内，如果该hystrix命令的调用此时不足20次，即时所有的请求都超时或其他原因失败，断路器都不会打开。
+    错误百分比下限：当请求总数在快照时间窗内超过了下限，比如发生了30次调用，如果在这30次调用中，有16次发生了超时异常，也就是超过50%的错误百分比，在默认设定50%下限情况下，这时候就会将断路器打开。
+
+    那么当断路器打开之后会发生什么呢？我们先来说说断路器未打开之前，对于之前那个示例的情况就是每个请求都会在当hystrix超时之后返回fallback，每个请求时间延迟就是近似hystrix的超时时间，如果设置为5秒，那么每个请求就都要延迟5秒才会返回。当熔断器在10秒内发现请求总数超过20，并且错误百分比超过50%，这个时候熔断器打开。打开之后，再有请求调用的时候，将不会调用主逻辑，而是直接调用降级逻辑，这个时候就不会等待5秒之后才返回fallback。通过断路器，实现了自动地发现错误并将降级逻辑切换为主逻辑，减少响应延迟的效果。
+
+    在断路器打开之后，处理逻辑并没有结束，我们的降级逻辑已经被成了主逻辑，那么原来的主逻辑要如何恢复呢？对于这一问题，hystrix也为我们实现了自动恢复功能。当断路器打开，对主逻辑进行熔断之后，hystrix会启动一个休眠时间窗，在这个时间窗内，降级逻辑是临时的成为主逻辑，当休眠时间窗到期，断路器将进入半开状态，释放一次请求到原来的主逻辑上，如果此次请求正常返回，那么断路器将继续闭合，主逻辑恢复，如果这次请求依然有问题，断路器继续进入打开状态，休眠时间窗重新计时。
+
+spring cloud zuul 做服务网关
+实现网关 路由 过滤等功能
+
+我们在使用Spring Cloud的Ribbon或Feign来实现服务调用的时候，如果我们的机器或网络环境等原因不是很好的话，有时候会发现这样一个问题：我们服务消费方调用服务提供方接口的时候，第一次请求经常会超时，而之后的调用就没有问题了。下面我们就来说说造成这个问题的原因，以及如何解决的方法。
+
+造成第一次服务调用出现失败的原因主要是Ribbon进行客户端负载均衡的Client并不是在服务启动的时候就初始化好的，而是在调用的时候才会去创建相应的Client，所以第一次调用的耗时不仅仅包含发送HTTP请求的时间，还包含了创建RibbonClient的时间，这样一来如果创建时间速度较慢，同时设置的超时时间又比较短的话，很容易就会出现上面所描述的显现。
+
+从日志中我们也能知道这一点细节，在第一次发起调用的时候我们可以从日志中看到如下信息：
+
+2017-09-25 08:29:54,201 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer - DynamicServerListLoadBalancer for client hello-service initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=hello-service,current list of Servers=[192.168.99.176:9901],Load balancer stats=Zone stats: {unknown=[Zone:unknown;    Instance count:1;    Active connections count: 0;    Circuit breaker tripped count: 0;    Active connections per server: 0.0;]
+},Server stats: [[Server:192.168.99.176:9901;    Zone:UNKNOWN;    Total Requests:0;    Successive connection failure:0;    Total blackout seconds:0;    Last connection made:Thu Jan 01 08:00:00 CST 1970;    First connection made: Thu Jan 01 08:00:00 CST 1970;    Active Connections:0;    total failure count in last (1000) msecs:0;    average resp time:0.0;    90 percentile resp time:0.0;    95 percentile resp time:0.0;    min resp time:0.0;    max resp time:0.0;    stddev resp time:0.0]
+]}ServerList:ConsulServerList{serviceId='hello-service', tag=null}
+
+而Feign的实现基于Ribbon，所以它也有一样的问题，下面就来看看如何解决这个问题。
+解决方法
+
+解决的方法很简单，既然第一次调用时候产生RibbonClient耗时，那么就让它提前创建，而不是在第一次调用的时候创建。
+
+在Spring Cloud的Dlaston版本中提供了几个新的参数，它们可以很方便的帮我们实现这样的功能。
+
+ribbon.eager-load.enabled=true
+ribbon.eager-load.clients=hello-service, user-service
+
+参数说明：
+
+    ribbon.eager-load.enabled：开启Ribbon的饥饿加载模式
+    ribbon.eager-load.clients：指定需要饥饿加载的客户端名称、服务名
+
+通过上面的配置完成之后，我们尝试重启一下服务消费者，这个时候我们会发现，我们没有开始调用服务接口，但是上面初始化负载均衡的日志就已经打印出来了。这就说明我们对ribbon的饥饿加载模块设置已经生效了。
+
