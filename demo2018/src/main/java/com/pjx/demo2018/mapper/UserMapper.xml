@@ -6,4 +6,21 @@
         INSERT INTO `t_user`(`username`,`password`) VALUES (#{username},#{password})
     </insert>
 
+    <resultMap id="userWithIpLog" type="com.pjx.demo2018.po.UserPO">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <collection column="id" property="userIPPOS" ofType="com.pjx.demo2018.po.UserIPPO"
+                    resultMap="com.pjx.demo2018.mapper.UserIPMapper.userIpLog">
+        </collection>
+
+    </resultMap>
+
+
+    <select id="findWithIpLog" resultMap="userWithIpLog">
+        select t.id, t.username, t.password,
+        <include refid="com.pjx.demo2018.mapper.UserIPMapper.userMapperUsersColumns"/>
+        from t_user t left join t_user_ip_log  on t.id=t_user_ip_log.user_id
+        where t.id in (#{id},#{id1})
+    </select>
 </mapper>

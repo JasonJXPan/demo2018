@@ -2,6 +2,8 @@ package com.pjx.demo2018.service;
 
 import com.pjx.demo2018.po.UserPO;
 
+import java.util.List;
+
 /**
  *
  * @author juqi
@@ -31,4 +33,20 @@ public interface UserService {
      */
     void delete(Long id);
 
+
+    /**
+     * @param id
+     * @return
+     */
+    List<UserPO> findById(Long id, Long id1);
+
+    /**
+     * @param id
+     * @param id1
+     * @return
+     */
+    List<UserPO> findWithIpLog(Long id, Long id1);
+
+    List<UserPO> findByUsername(String username,
+                                List<String> list);
 }

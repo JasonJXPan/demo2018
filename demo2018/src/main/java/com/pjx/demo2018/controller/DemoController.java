@@ -81,7 +81,7 @@ public class DemoController {
 
     @RequestMapping(value = "/secret", method = RequestMethod.GET)
     public PurchPo find() {
-        PurchPo byId = userMapper.findById();
+        PurchPo byId = userMapper.findPoById();
         System.out.println(byId.getOverdue());
         System.out.println(byId.getOverdue().getTime());
         System.out.println(byId.getId());
@@ -89,7 +89,7 @@ public class DemoController {
     }
 
     @RequestMapping(value = "/test-obj", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void testObj(@RequestBody Mytest a) {
+    public void testObj(@RequestBody Mytest a, @RequestParam(value = "b") String b) {
         System.out.println(a.getName());
     }
 

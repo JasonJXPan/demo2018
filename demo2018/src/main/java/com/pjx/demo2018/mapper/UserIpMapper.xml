@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pjx.demo2018.mapper.UserIPMapper">
+    <resultMap id="userIpLog" type="com.pjx.demo2018.po.UserIPPO">
+        <result column="userIpid" property="userIpid"/>
+        <result column="ip" property="ip"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+
+    <sql id="userMapperUsersColumns">
+        t_user_ip_log.id as userIpid, t_user_ip_log.ip, t_user_ip_log.user_id
+    </sql>
+</mapper>

@@ -2,9 +2,9 @@ package com.pjx.demo2018.mapper;
 
 import com.pjx.demo2018.po.PurchPo;
 import com.pjx.demo2018.po.UserPO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
+import org.springframework.cache.annotation.EnableCaching;
 
 import java.util.List;
 
@@ -14,12 +14,48 @@ import java.util.List;
  * @date 18/6/2
  */
 @Mapper
+//开启 当前namespace的缓存  只有当所有的配置都用注解或者都用xml时才会生效
+// List<UserPO> findWithIpLog(@Param("id") Long id, @Param("id1") Long id1); 不会生效，即使是加了支持缓存的注解
+@CacheNamespace
 public interface UserMapper {
 
 
     @Select("select t.orderOID as id, t.overdue_deadline as overdue from tm_purchase_order t where t.orderNumber='8118011181698'")
-    PurchPo findById();
+    PurchPo findPoById();
 
+
+    /**
+     * @param id
+     * @param id1
+     * @return
+     */
+    @Results(id = "res",value={
+            @Result(column = "id", property ="id" ),
+            @Result(column = "username", property ="username" ),
+            @Result(column = "password", property ="password" ),
+            @Result(column = "id", property = "userIPPOS",
+                    one = @One(select = "com.pjx.demo2018.mapper.UserIPMapper.findByUserId", fetchType = FetchType.LAZY))
+    })
+    @Select("select * from t_user t where t.id in (#{id}, #{id1})")
+    @Options(useCache = false)
+    List<UserPO> findById(@Param("id") Long id, @Param("id1") Long id1);
+
+    /**
+     * @param id
+     * @param name
+     * @return
+     */
+    @Update("update t_user t set t.username=#{name} where t.id=#{id}")
+    boolean updateNameById(@Param("id") Long id, @Param("name") String name);
+
+    /**
+     * @param id
+     * @param id1
+     * @return
+     */
+    //缓存不生效 因为这是注解和xml混用
+    @Options(useCache = true)
+    List<UserPO> findWithIpLog(@Param("id") Long id, @Param("id1") Long id1);
 
     /**
      * 根据用户名查询用户结果集
