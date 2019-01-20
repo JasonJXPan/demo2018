@@ -6,13 +6,19 @@
         INSERT INTO `t_user`(`username`,`password`) VALUES (#{username},#{password})
     </insert>
 
+    <!--解决N+1问题-->
     <resultMap id="userWithIpLog" type="com.pjx.demo2018.po.UserPO">
         <result column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <collection column="id" property="userIPPOS" ofType="com.pjx.demo2018.po.UserIPPO"
                     resultMap="com.pjx.demo2018.mapper.UserIPMapper.userIpLog">
-        </collection>
+
+        <!--  通常是这种方式，但是不能解决 N+1问题 因为会多次根据id查询userIpLog,
+        使用这种方式的时候，最外层的查询没有join条件关联到userIPLog
+        <collection column="id" property="userIPPOS" ofType="com.pjx.demo2018.po.UserIPPO"-->
+                    <!--select="select...">    -->
+        <!--</collection>-->
 
     </resultMap>
 
@@ -23,4 +29,5 @@
         from t_user t left join t_user_ip_log  on t.id=t_user_ip_log.user_id
         where t.id in (#{id},#{id1})
     </select>
+    <!--解决N+1问题-->
 </mapper>

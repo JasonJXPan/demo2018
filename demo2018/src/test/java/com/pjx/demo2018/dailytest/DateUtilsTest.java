@@ -73,5 +73,11 @@ public class DateUtilsTest {
         System.out.println(getDiffHours(calendarParse.getTime(), currentDate));
     }
 
+    @Test
+    public void test3() {
+        Date date = DateUtils.addDays(new Date(), -2);
+        System.out.println(date);
+    }
+
 
 }

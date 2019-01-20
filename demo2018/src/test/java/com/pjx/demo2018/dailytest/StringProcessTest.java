@@ -1,10 +1,14 @@
 package com.pjx.demo2018.dailytest;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.pjx.demo2018.dailytest.util.StringProcessUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by juqi on 18/7/30.
@@ -103,5 +107,74 @@ public class StringProcessTest {
         Object[] objects = new Object[]{a ,b, c, d, e};
         System.out.println(StringUtils.join(a, b, c, d, e));
         System.out.println(StringUtils.join(objects, "-"));
+    }
+    @Test
+    public void test9() {
+        ExtentionDTO dto = new ExtentionDTO();
+        dto.setServiceFeeSwitch(true);
+        String string = JSON.toJSONString(null);
+        System.out.println(string);
+        ExtentionDTO jsonObject = JSON.parseObject(string,ExtentionDTO.class);
+        System.out.println(jsonObject);
+
+        System.out.println(JSON.toJSONString(new ExtentionDTO()));
+        System.out.println(JSON.toJSONString(null));
+        String x = "{\"serviceFeeSwitch\":false}";
+        System.out.println(x);
+        ExtentionDTO extentionDTO = JSON.parseObject(x, ExtentionDTO.class);
+        System.out.println(extentionDTO);
+    }
+    class ExtentionDTO implements Serializable {
+
+        private static final long serialVersionUID = 5302100609886058646L;
+
+        private boolean serviceFeeSwitch;
+
+        public boolean getServiceFeeSwitch() {
+            return serviceFeeSwitch;
+        }
+
+        public void setServiceFeeSwitch(boolean serviceFeeSwitch) {
+            this.serviceFeeSwitch = serviceFeeSwitch;
+        }
+
+        private List<A> a;
+
+
+        public List<A> getA() {
+            return a;
+        }
+
+        public void setA(List<A> a) {
+            this.a = a;
+        }
+
+    }
+    class A {
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return "A{" +
+                    "name='" + name + '\'' +
+                    '}';
+        }
+    }
+
+    @Test
+    public void test10() {
+
+        String x = "您抢购的[SHOW_NAME SHOW_TIME ORDER_QTY张]已取消，支付金额会在2-3个工作日内原路退还到您的账户中。摩天轮票务不会以订单无效、支付异常等为由，要求您提供银行卡信息、退款或进行银行间操作，谨防诈骗。";
+
+        System.out.println(x.replace("SHOW_NAME", "演出啊"));
+        System.out.println(x);
     }
 }

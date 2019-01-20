@@ -22,7 +22,7 @@ public class ListIteratorTest {
         list.add("D");
         list.add("e");
         for (String item : list) {
-            if (item.equals("D")) {
+            if (item.equals("D")) { //删除倒数第二个不会有问题
                 System.out.println(item);
                 item = "d";
                 list.remove("D");
@@ -38,14 +38,36 @@ public class ListIteratorTest {
         list.add("b");
         list.add("c");
         list.add("D");
+        list.add("D");
+        list.add("D1");
         list.add("e");
+        list.add("D");
         for (int i=0; i< list.size(); i++) {
             String item = list.get(i);
             if (item.equals("D")) {
                 System.out.println(item);
                 item = "d";
                 list.remove("D");
-                list.add("d");
+                i--;
+            }
+        }
+        System.out.println(list);
+    }
+    @Test
+    public void test2_1(){
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("D");
+        list.add("D");
+        list.add("D1");
+        list.add("e");
+        list.add("D");
+        Iterator<String> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().equals("D")) {
+                iterator.remove();
             }
         }
         System.out.println(list);
@@ -135,14 +157,15 @@ public class ListIteratorTest {
     public void test6(){
         List<String> list = new ArrayList<>();
         list.add("1");
+        list.add("1");
         list.add("2");
         list.add("3");
         //会报错 java.util.ConcurrentModificationException
-//        for (String x : list) {
-//            if ("1".equals(x)) {
-//                list.remove(x);
-//            }
-//        }
+        for (String x : list) {
+            if ("2".equals(x)) {
+                list.remove(x);
+            }
+        }
         Iterator<String> iterator = list.iterator();
         while (iterator.hasNext()) {
             String x = iterator.next();

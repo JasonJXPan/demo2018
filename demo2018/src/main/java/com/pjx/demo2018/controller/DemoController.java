@@ -5,6 +5,7 @@ import com.pjx.demo2018.config.My2Properties;
 import com.pjx.demo2018.mapper.UserMapper;
 import com.pjx.demo2018.po.Mytest;
 import com.pjx.demo2018.po.PurchPo;
+import com.pjx.demo2018.service.UserIpLogService;
 import com.pjx.demo2018.vo.MyPost;
 import com.pjx.demo2018.vo.MyPostXML;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -31,6 +32,8 @@ public class DemoController {
 
     @Autowired
     private My2Properties my2Properties;
+    @Autowired
+    private UserIpLogService userIpLogService;
 
     @RequestMapping(value = "/health_check", method = RequestMethod.GET)
     public String checkProjectHealth(){
@@ -93,6 +96,13 @@ public class DemoController {
         System.out.println(a.getName());
     }
 
+    @RequestMapping(value = "/test/user-ip-log/{userId}", method = RequestMethod.GET)
+    public void testUserIpLog(@PathVariable(value = "userId") String userId,
+                              @RequestParam(value = "abc", defaultValue = "0") BigDecimal a) {
+        a.doubleValue();
+        String num = "1";
+        userIpLogService.findByUserId(userId);
+    }
     class A {
         private String name;
 
