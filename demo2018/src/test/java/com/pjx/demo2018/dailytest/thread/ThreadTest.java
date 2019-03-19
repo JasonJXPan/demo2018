@@ -485,7 +485,14 @@ public class ThreadTest {
 
     }
 
+    @Test
+    public void test123() {
 
+    }
+
+    public static synchronized void ab(){
+
+    }
 }
 class ChildThread implements Runnable {
     @Override

@@ -1,19 +1,25 @@
 package com.pjx.demo2018.controller;
 
+import com.juqitech.service.utils.net.StatusCode;
+import com.juqitech.service.utils.query.*;
 import com.pjx.demo2018.config.FavorProperties;
 import com.pjx.demo2018.config.My2Properties;
+import com.pjx.demo2018.dto.UserRequestDTO;
 import com.pjx.demo2018.mapper.UserMapper;
 import com.pjx.demo2018.po.Mytest;
 import com.pjx.demo2018.po.PurchPo;
 import com.pjx.demo2018.service.UserIpLogService;
 import com.pjx.demo2018.vo.MyPost;
 import com.pjx.demo2018.vo.MyPostXML;
+import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,6 +109,53 @@ public class DemoController {
         String num = "1";
         userIpLogService.findByUserId(userId);
     }
+
+    @RequestMapping(value = "/test/user-ip-log/foreach", method = RequestMethod.GET)
+    public void testUserIpLogForeach() {
+        List<String> list = new ArrayList<>();
+        for (int i=0; i< 10000; i++) {
+            list.add(i+"");
+        }
+        long l = System.currentTimeMillis();
+        userIpLogService.findByUserIdsForeach(list);
+        System.out.println(System.currentTimeMillis()-l);
+    }
+
+    @RequestMapping(value = "/test/user-ip-log/coll", method = RequestMethod.GET)
+    public void testUserIpLogColl() {
+        List<String> list = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("(");
+        for (int i=0; i< 10000; i++) {
+            stringBuilder.append(i).append(",");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        stringBuilder.append(")");
+
+        long l = System.currentTimeMillis();
+        userIpLogService.findByUserIds(stringBuilder.toString());
+        System.out.println(System.currentTimeMillis()-l);
+    }
+
+
+    @RequestMapping(value = "/test/user-ip-log1", method = RequestMethod.GET)
+    public void testUserIpLog1() {
+        QueryFilter filter = new QueryFilter();
+        String purchaseOID ="purchaseOID";
+        String zoneRowSeat ="purczoneRowSeathaseOID";
+        String sql ="sql";
+        QueryFilterHelper.addSimpleCondition(filter, purchaseOID, "tm_purchase_order.orderOID", CriteriaOperator
+                .EQUALS);
+        filter.setUpdateCondition("tm_purchase_order.zoneRowSeat", new Criteria(true, CriteriaOperator.EQUALS,
+                zoneRowSeat));
+        SQLHelper.createSQL(sql, (Pagination)null, filter);
+    }
+
+    @RequestMapping(value = "/test/request-dto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void testRequestDTO(@RequestBody UserRequestDTO requestDTO) {
+        System.out.println(requestDTO);
+    }
     class A {
         private String name;
 
@@ -122,4 +175,23 @@ public class DemoController {
                     .toString();
         }
     }
+
+    @RequestMapping(value = "/test/fix_null", method = RequestMethod.POST)
+    public void checkPostNull(@RequestBody MyRequest myRequest) {
+        System.out.println("hahaha");
+        boolean blank = StringUtils.isBlank(myRequest.getId());
+        if (StringUtils.isBlank(myRequest.getId())) {
+            return ;
+        }
+        System.out.println(blank);
+        System.out.println(myRequest);
+    }
+
+
+}
+
+@Data
+class MyRequest {
+    private String id;
+    private String value;
 }

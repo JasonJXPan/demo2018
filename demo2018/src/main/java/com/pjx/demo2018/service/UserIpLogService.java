@@ -17,4 +17,8 @@ public interface UserIpLogService {
      * @return
      */
     List<UserIPPO> findByUserId(String userId);
+
+    List<UserIPPO> findByUserIdsForeach(List<String>userId);
+
+    List<UserIPPO> findByUserIds(String userId);
 }

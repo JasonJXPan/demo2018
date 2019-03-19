@@ -12,7 +12,10 @@ import java.util.Random;
  */
 public class ThreadTestProducerConsumer {
 
-    @Test
+    public static void main(String[] args) {
+        ThreadTestProducerConsumer threadTestProducerConsumer = new ThreadTestProducerConsumer();
+        threadTestProducerConsumer.test();
+    }
     public void test(){
         Buffer buffer = new Buffer();
         Producer producer = new Producer(buffer);
@@ -24,6 +27,7 @@ public class ThreadTestProducerConsumer {
             e.printStackTrace();
         }
         consumer.start();
+
     }
 
     class Consumer extends Thread {

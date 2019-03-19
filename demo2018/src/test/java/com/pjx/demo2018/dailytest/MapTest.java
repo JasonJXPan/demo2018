@@ -2,8 +2,10 @@ package com.pjx.demo2018.dailytest;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -20,5 +22,13 @@ public class MapTest {
         Date b = (Date) map.get("b");
         System.out.println(a);
         System.out.println(b);
+    }
+
+    @Test
+    public void test1() {
+        Map<String, BigDecimal> priceItemMap = new LinkedHashMap<>();
+        for (Map.Entry<String, BigDecimal> fee : priceItemMap.entrySet()) {
+
+        }
     }
 }

@@ -24,6 +24,9 @@ public interface UserMapper {
     PurchPo findPoById();
 
 
+//    @Select("select t.orderOID as id, t.overdue_deadline as overdue from tm_purchase_order t where t.orderNumber='8118011181698'")
+//    List<PurchPo> findPoByIds();
+
     /**
      * @param id
      * @param id1

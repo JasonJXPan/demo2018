@@ -1,0 +1,46 @@
+public void test(){
+		BigDecimal seatPlanPrice = null;
+		BigDecimal strategyPrice = new BigDecimal("400");
+		BigDecimal salePrice = new BigDecimal("1575");
+		HookType hookType = HookType.FULL;
+		BigDecimal originalPrice = new BigDecimal("400");
+		int qty = 4;
+		//查询service show 获取票面的信息 以及票面价 售价 策略价 策略模式等
+//		TSingleResult<MinPriceTicketWithSeatPlanDTO> seatPlanWithTickets = showClient.findSeatPlanWithTickets(rowsGroupRequestDTO);
+//		if (seatPlanWithTickets != null && seatPlanWithTickets.getStatusCode() == StatusCode.success
+//				&& seatPlanWithTickets.getData()!=null) {
+//			MinPriceTicketWithSeatPlanDTO data = seatPlanWithTickets.getData();
+			seatPlanPrice = BigDecimalUtil.mul(originalPrice, qty);
+//		}
+//		if (originalPrice != null) {
+//			seatPlanPrice = originalPrice;
+//		}
+
+		if (salePrice == null) {
+			salePrice = BigDecimal.ZERO;
+		}
+		salePrice = BigDecimalUtil.mul(salePrice, qty);
+		if (strategyPrice == null) {
+			strategyPrice = BigDecimal.ZERO;
+		}
+		strategyPrice = BigDecimalUtil.mul(strategyPrice, qty);
+
+		boolean isStrategy = hookType == HookType.NONE? false:true;
+
+		ClassificationFeedDTO classificationFeedDTO = new ClassificationFeedDTO();
+		classificationFeedDTO.setSalePrice(salePrice);
+		classificationFeedDTO.setOriginalPrice(seatPlanPrice);
+		classificationFeedDTO.setStrategy(isStrategy);
+		classificationFeedDTO.setStrategyPrice(strategyPrice);
+		classificationFeedDTO.setSeatPlanId("123");
+		classificationFeedDTO.setClassificationSourceType(ClassificationSourceType.PLACE_ORDER);
+		classificationFeedDTO.setQty(qty);
+
+		List<Classification> classifications = ClassificationMatcher.match(hookType);
+		for (Classification classification : classifications) {
+			if (classification.match(classificationFeedDTO)) {
+				logger.info("aaaaaaaa"+classification.classify(classificationFeedDTO));
+				break;
+			}
+		}
+	}

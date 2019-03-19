@@ -80,4 +80,26 @@ public class DateUtilsTest {
     }
 
 
+    @Test
+    public void test4() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date parse = dateFormat.parse("2019-01-28 15:28:43");
+            boolean after = DateUtils.next(parse, 2).after(new Date());
+            System.out.println(after);
+        } catch (ParseException e) {
+
+        }
+        try {
+            Object dateUtilsTest = Class.forName("com.pjx.demo2018.dailytest.DateUtilsTest").newInstance();
+            DateUtilsTest dateUtilsTest1 = (DateUtilsTest) dateUtilsTest;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

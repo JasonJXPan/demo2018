@@ -1,11 +1,13 @@
 package com.pjx.demo2018.dailytest;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pjx.demo2018.dailytest.domain.*;
+import lombok.Data;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -189,4 +191,34 @@ public class GsonTest {
 
         Arrays.asList("[  {    \"orderItemOID\": \"5bb47346e4b0b7858c139db3\",    \"showOID\": \"5b332f58908c38706b47e509\",    \"sellerOID\": \"59c20a3a0cf2a38f4825523b\"  }]","[  {    \"orderItemOID\": \"5bb4880de4b009ffefa60296\",    \"showOID\": \"5bb06cf5908c3856d692423b\",    \"sellerOID\": \"5848c5fb0cf279ca67a3a91c\"  }]","[  {    \"orderItemOID\": \"5bb4a79be4b0b7858c1612ed\",    \"showOID\": \"5b67e4bc908c38543ff24b4d\",    \"sellerOID\": \"5a3672d1e4b0eb06e56c8336\"  }]","[  {    \"orderItemOID\": \"5bb4c849e4b009ffefa8d808\",    \"showOID\": \"5b9b6399c756b162a9c6044a\",    \"sellerOID\": \"5833f5b90cf286628fafe345\"  }]","[  {    \"orderItemOID\": \"5bb4e391e4b009ffefa9f368\",    \"showOID\": \"5bb0f6eac756b1616d8b7743\",    \"sellerOID\": \"5bb065dc069b3e0315a210c2\"  }]");
     }
+
+
+    @Test
+    public void test9(){
+     MyRequest myRequest = new MyRequest();
+     myRequest.setId("id");
+     myRequest.setX("x");
+        try {
+            String s = new ObjectMapper().writeValueAsString(myRequest);
+            MyRequest1 myRequest11 = JSON.parseObject(s, MyRequest1.class);
+            System.out.println(myRequest11);
+//            MyRequest1 myRequest1 = new ObjectMapper().readValue(s, MyRequest1.class);
+//            System.out.println(myRequest1);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+@Data
+class MyRequest {
+    private String id;
+    private String x;
+}
+
+@Data
+class MyRequest1 {
+    private String id;
 }

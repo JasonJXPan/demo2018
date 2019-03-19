@@ -124,6 +124,8 @@ public class StringProcessTest {
         ExtentionDTO extentionDTO = JSON.parseObject(x, ExtentionDTO.class);
         System.out.println(extentionDTO);
     }
+
+
     class ExtentionDTO implements Serializable {
 
         private static final long serialVersionUID = 5302100609886058646L;
@@ -176,5 +178,15 @@ public class StringProcessTest {
 
         System.out.println(x.replace("SHOW_NAME", "演出啊"));
         System.out.println(x);
+    }
+
+    @Test
+    public void test11() {
+
+        String x = "1234";
+        System.out.println(x.substring(0, 2));
+        System.out.println(x.substring(2, 4));
+        System.out.println(x.substring(4, 6));
+
     }
 }

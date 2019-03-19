@@ -23,4 +23,14 @@ public class UserIpLogServiceImpl implements UserIpLogService {
     public List<UserIPPO> findByUserId(String userId) {
         return userIPMapper.findByUserId(userId);
     }
+
+    @Override
+    public List<UserIPPO> findByUserIdsForeach(List<String> userId) {
+        return userIPMapper.findByUserIdsForeach(userId);
+    }
+
+    @Override
+    public List<UserIPPO> findByUserIds(String userId) {
+        return userIPMapper.findByUserIds(userId);
+    }
 }
