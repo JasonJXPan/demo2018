@@ -1,5 +1,6 @@
 package com.pjx.demo2018.dailytest;
 
+import com.juqitech.service.utils.DateUtils;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -28,5 +29,11 @@ public class DateTest {
         System.out.println(currentDate);
         System.out.println(earliestDate);
         System.out.println(latestDate);
+    }
+
+    @Test
+    public void test2() {
+        System.out.println(new Date().getHours());
+        System.out.println(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
     }
 }

@@ -5,6 +5,7 @@ import com.juqitech.service.utils.BigDecimalUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
 /**
@@ -140,10 +141,20 @@ public class BigDecimalTest {
     public void test16() {
         BigDecimal bigDecimal = new BigDecimal("-100.23");
         System.out.println(bigDecimal.toString());
-        StringBuilder priceItemValDisplayBuilder = new StringBuilder();
-        System.out.println(priceItemValDisplayBuilder.toString());
 
+        BigDecimal ratio = new BigDecimal("90");
+        int x = 95;
+        System.out.println(ratio.divide(new BigDecimal("100")).multiply(new BigDecimal(x)));
+        System.out.println(ratio.divide(new BigDecimal("100")).multiply(new BigDecimal(x)).setScale(0, BigDecimal.ROUND_FLOOR));
+        System.out.println(ratio.divide(new BigDecimal("100")).multiply(new BigDecimal(x)).setScale(0, BigDecimal.ROUND_DOWN));
+        System.out.println(ratio.divide(new BigDecimal("100")).multiply(new BigDecimal(x)).setScale(0, BigDecimal.ROUND_CEILING));
+        System.out.println(ratio.divide(new BigDecimal("100")).multiply(new BigDecimal(x)).setScale(0, BigDecimal.ROUND_UP));
+
+        System.out.println(new BigDecimal("90").toString());
+        System.out.println(new BigDecimal("63").divide(BigDecimal.TEN).toString());
     }
+
+
 }
 class Temp {
     private String a;
