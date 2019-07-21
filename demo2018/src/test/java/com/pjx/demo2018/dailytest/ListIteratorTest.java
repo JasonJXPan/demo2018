@@ -1,12 +1,10 @@
 package com.pjx.demo2018.dailytest;
 
+import com.juqitech.service.enums.ProductType;
 import com.pjx.demo2018.dailytest.abs.impl.Dog;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by juqi on 18/9/10.
@@ -175,4 +173,18 @@ public class ListIteratorTest {
         }
         System.out.println(list);
     }
+
+    @Test
+    public void test7() {
+        List<ProductType> list = new ArrayList<>();
+        list.add(ProductType.TICKET);
+        System.out.println(list.size());
+        System.out.println(list.toArray(new ProductType[0]));
+//        System.identityHashCode()
+
+        List<String> myList = new ArrayList<>();
+        myList.add(1, "1");
+    }
+
+
 }

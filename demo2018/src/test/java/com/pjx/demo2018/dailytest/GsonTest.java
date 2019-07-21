@@ -1,6 +1,7 @@
 package com.pjx.demo2018.dailytest;
 
 import com.alibaba.fastjson.JSON;
+import com.aliyun.openservices.shade.com.alibaba.rocketmq.shade.com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -8,11 +9,20 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pjx.demo2018.dailytest.domain.*;
 import lombok.Data;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * refer: https://github.com/google/gson/blob/master/UserGuide.md
@@ -210,8 +220,161 @@ public class GsonTest {
             e.printStackTrace();
         }
     }
-}
 
+    @Test
+    public void test10(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            System.out.println(dateFormat.parse("2019-02-24 23:59:59").getTime());
+        } catch (ParseException e) {
+
+        }
+        String x ="[{\"overdueDeadline\":1553702399000,\"targetOrderOID\":\"5c4537fa94b85f14b4658ba4\"}]";
+        try {
+            List map = new ObjectMapper().readValue(x, List.class);
+            System.out.println(map);
+        } catch (IOException e) {
+
+        }
+        List<OrderOverdueDTO> orderOverdueDTOS = JSONObject.parseArray(x, OrderOverdueDTO.class);
+        System.out.println(orderOverdueDTOS);
+    }
+
+    @Test
+    public void test11() {
+        List<PriceItemDTO> priceItems = new ArrayList<>();
+        PriceItemDTO priceItem = new PriceItemDTO();
+        priceItem.setPriceItemName("代收票款");
+        priceItem.setComputable(true);
+        priceItem.setPriceItemVal(new BigDecimal("77"));
+        priceItems.add(priceItem);
+        String x = JSON.toJSONString(priceItems);
+        System.out.println(x);
+
+        List<PriceItemDTO> priceItemDTOs = JSON.parseArray(x, PriceItemDTO.class);
+        System.out.println(priceItemDTOs);
+
+        PriceItemGroup itemGroup = new PriceItemGroup();
+        itemGroup.setSeq(1);
+        itemGroup.setPriceItemDTOs(priceItemDTOs);
+        List<PriceItemGroup> itemGroups = new ArrayList<>();
+        itemGroups.add(itemGroup);
+        String y = JSON.toJSONString(itemGroups);
+        System.out.println(y);
+
+        List<PriceItemDTO> priceItemDTOs1 = JSON.parseArray(y, PriceItemDTO.class);
+//        System.out.println(CollectionUtils.isEmpty(priceItemDTOs1));
+//        System.out.println(StringUtils.isBlank(priceItemDTOs1.get(0).getPriceItemName()));
+//        System.out.println(priceItemDTOs1.size());
+//        System.out.println(priceItemDTOs1);
+        if (StringUtils.isBlank(priceItemDTOs1.get(0).getPriceItemName())) {
+            List<PriceItemGroup> itemGroups1 = JSON.parseArray(y, PriceItemGroup.class);
+            System.out.println(itemGroups1);
+        }
+    }
+
+    @Test
+    public void test12() {
+        List<PriceItemDTO> priceItems = new ArrayList<>();
+        PriceItemDTO priceItem = new PriceItemDTO();
+        priceItem.setPriceItemName("代收票款");
+        priceItem.setComputable(true);
+        priceItem.setPriceItemVal(new BigDecimal("77"));
+        priceItems.add(priceItem);
+
+        PriceItemDTO priceItem1 = new PriceItemDTO();
+        priceItem1.setPriceItemName("代收票款1");
+        priceItem1.setComputable(true);
+        priceItem1.setPriceItemVal(new BigDecimal("771"));
+        priceItems.add(priceItem1);
+
+        System.out.println(priceItems);
+
+        List<PriceItemDTO> pri = priceItems.stream().filter(item -> StringUtils.equals(item.getPriceItemName(), "代收票款1")).collect(Collectors.toList());
+        System.out.println(pri);
+        pri.get(0).setComputable(false);
+        pri.get(0).setPriceItemName("123456");
+
+        System.out.println(priceItems);
+
+        System.out.println(StringUtils.join("a", "B"));
+
+    }
+
+    @Test
+    public void test13() {
+        List<PriceItemDTO> priceItems = new ArrayList<>();
+        PriceItemDTO priceItem = new PriceItemDTO();
+        priceItem.setPriceItemName("代收票款");
+        priceItem.setComputable(true);
+        priceItem.setPriceItemVal(new BigDecimal("77"));
+        priceItems.add(priceItem);
+
+        PriceItemDTO priceItem1 = new PriceItemDTO();
+        priceItem1.setPriceItemName("代收票款1");
+        priceItem1.setComputable(true);
+        priceItem1.setPriceItemVal(new BigDecimal("771"));
+        priceItems.add(priceItem1);
+
+        List<PriceItemDTO> result = new ArrayList<>();
+        int i =0;
+        for (PriceItemDTO a : priceItems) {
+            PriceItemDTO b = a;
+            if (i==0) {
+                b.setComments("aaaa");
+            } else {
+                b.setComments("bbbb");
+            }
+            i++;
+            result.add(b);
+        }
+        System.out.println(result);
+    }
+@Data
+class PriceItemGroup {
+    private int seq;
+    private List<PriceItemDTO> priceItemDTOs;
+}
+@Data
+class PriceItemDTO {
+    private String priceItemName;
+    /**
+     * 计费项子名字
+     */
+    private String priceItemSubName;
+    private BigDecimal priceItemVal;
+    private String comments;
+
+    /**
+     * 订单priceItem 子类型名
+     * 如 priceItem 类型为ALLOWANCE，
+     *  子类型可能是SPONSOR_ALLOWANCE 表示主办补贴
+     */
+    private String priceItemSubTypeName;
+
+    /**
+     * 计费项单位, 默认为元
+     */
+    private PriceItemUnit unit = PriceItemUnit.YUAN;
+
+    /**
+     * 是否可以参与计算订单金额, 默认为true
+     */
+    private boolean computable = true;
+
+
+
+}
+    public enum PriceItemUnit {
+        /**
+         * 元
+         */
+        YUAN,
+        /**
+         * 次
+         */
+        CI
+    }
 @Data
 class MyRequest {
     private String id;
@@ -222,3 +385,35 @@ class MyRequest {
 class MyRequest1 {
     private String id;
 }
+class OrderOverdueDTO implements Serializable {
+
+    private static final long serialVersionUID = 3740154186726667688L;
+
+    private String targetOrderOID;
+    private long overdueDeadline;
+
+    public String getTargetOrderOID() {
+        return targetOrderOID;
+    }
+
+    public void setTargetOrderOID(String targetOrderOID) {
+        this.targetOrderOID = targetOrderOID;
+    }
+
+    public long getOverdueDeadline() {
+        return overdueDeadline;
+    }
+
+    public void setOverdueDeadline(long overdueDeadline) {
+        this.overdueDeadline = overdueDeadline;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("targetOrderOID=");
+        sb.append(targetOrderOID);
+        sb.append(",overdueDeadline=");
+        sb.append(overdueDeadline);
+        return sb.toString();
+    }
+}}
