@@ -1,5 +1,8 @@
 package com.pjx.demo2018.dailytest;
+import java.util.ArrayList;
+import	java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.Date;
@@ -26,5 +29,13 @@ public class JDK7 {
         Date date1 = new Date(1541088000000L);
         Date date2 = new Date(1541127600000L);
         System.out.println(date1.compareTo(date2));
+    }
+    @Test
+    public void test2(){
+        String x = "";
+        List<String> list = new ArrayList<>();
+        list.add(x);
+        list.remove(x);
+        System.out.println(String.join("-", "A", "B"));
     }
 }

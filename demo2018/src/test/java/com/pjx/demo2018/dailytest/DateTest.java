@@ -1,8 +1,10 @@
 package com.pjx.demo2018.dailytest;
 
+import com.juqitech.service.utils.BigDecimalUtil;
 import com.juqitech.service.utils.DateUtils;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,5 +37,11 @@ public class DateTest {
     public void test2() {
         System.out.println(new Date().getHours());
         System.out.println(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        BigDecimal bigDecimal = new BigDecimal("62.10");
+        System.out.println(bigDecimal.setScale(0, BigDecimal.ROUND_UP));
+    }
+    @Test
+    public void test3() {
+        System.out.println(DateUtils.parseWebFormat("1564502400000"));
     }
 }

@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 /**
@@ -135,6 +137,10 @@ public class BigDecimalTest {
         temp.setA("a");
         String stringVal = JSON.toJSONString(temp);
         System.out.println(stringVal);
+        BigDecimal bigDecimal = new BigDecimal("10");
+        BigDecimal bigDecimal1 = new BigDecimal("3");
+        System.out.println(bigDecimal.divide(bigDecimal1, BigDecimal.ROUND_FLOOR));
+
     }
 
     @Test
@@ -152,6 +158,40 @@ public class BigDecimalTest {
 
         System.out.println(new BigDecimal("90").toString());
         System.out.println(new BigDecimal("63").divide(BigDecimal.TEN).toString());
+    }
+
+    @Test
+    public void test17() {
+        DecimalFormat ORDER_NUMBER_FORMAT = new DecimalFormat("00000");
+        String countStr = ORDER_NUMBER_FORMAT.format(9998);
+        System.out.println(countStr);
+        String countStr1 = ORDER_NUMBER_FORMAT.format(9999);
+        System.out.println(countStr1);
+
+        String countStr2 = ORDER_NUMBER_FORMAT.format(9999998);
+        System.out.println(countStr2);
+        String countStr3 = ORDER_NUMBER_FORMAT.format(9999999);
+        System.out.println(countStr3);
+
+        System.out.println(x(countStr));
+        System.out.println(x(countStr1));
+        System.out.println(x(countStr2));
+        System.out.println(x(countStr3));
+    }
+
+    public String x(String countStr) {
+        DecimalFormat MONTH_DAY_FORMAT = new DecimalFormat("00");
+        Calendar today = Calendar.getInstance();
+        String yearStr = String.valueOf(today.get(Calendar.YEAR));
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(yearStr.charAt(2)).append(yearStr.charAt(3));
+        buffer.append(countStr.charAt(0));
+        buffer.append(MONTH_DAY_FORMAT.format(today.get(Calendar.MONTH) + 1));
+        buffer.append(countStr.charAt(1)).append(countStr.charAt(2));
+        buffer.append(MONTH_DAY_FORMAT.format(today.get(Calendar.DAY_OF_MONTH)));
+        buffer.append(countStr.substring(3));
+        System.out.println(countStr.substring(3)+"s");
+        return buffer.toString();
     }
 
 

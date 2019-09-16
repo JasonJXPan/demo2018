@@ -1,13 +1,18 @@
 package com.pjx.demo2018.dailytest.stream.w3c;
 
+import lombok.Data;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.NativeWebRequest;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.*;
 import java.util.function.Function;
@@ -533,7 +538,7 @@ public class StreamTestW3C {
                 .stream()
                 .map(Employee::getName)
                 .collect(Collectors.collectingAndThen(Collectors.toList(),
-                        result ->  Collections.unmodifiableList(result)));
+                        result -> Collections.unmodifiableList(result)));
 
         ///Java流 - Java流查找
         System.out.println("Java流 - Java流查找");
@@ -587,4 +592,147 @@ public class StreamTestW3C {
         }
     }
 
+    @Test
+    public void test11() {
+        List<PO> list = new ArrayList<>();
+        PO po = new PO();
+        po.setId("1");
+        po.setName("11");
+        list.add(po);
+        PO po1 = new PO();
+        po1.setId("2");
+        po1.setName("22");
+        list.add(po1);
+        List<DTO> collect = list.stream().map(item -> new DTO(item)).collect(Collectors.toList());
+
+        System.out.println(list);
+        System.out.println(collect);
+    }
+
+    @Test
+    public void test123() {
+        System.out.println(new PO().hashCode());
+        System.out.println(new PO().hashCode());
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", java.util.Locale.US);
+        Date date = null;
+        try {
+            date = sdf.parse("2019-04-18");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test13() {
+        List<PO> pos = new ArrayList<>();
+        PO po = new PO();
+        po.setId("1");
+        po.setName("n1");
+        PO po1 = new PO();
+        po1.setId("2");
+        po1.setName("n2");
+        pos.add(po);
+        pos.add(po1);
+
+        Map<String, String> mainOrderIdToNumberMapping = pos.stream().collect(
+                Collectors.toMap(PO::getId, PO::getName,
+                        (k1, k2) -> k2)
+        );
+        System.out.println(mainOrderIdToNumberMapping);
+        List<PO> pos1 = new ArrayList<>();
+        PO po11 = new PO();
+        po11.setId("1");
+        po11.setName("n11");
+        PO po22 = new PO();
+        po22.setId("2");
+        po22.setName("n22");
+        pos1.add(po11);
+        pos1.add(po22);
+        System.out.println(pos1);
+        if (MapUtils.isNotEmpty(mainOrderIdToNumberMapping)) {
+            pos1.stream().forEach(item -> {
+                System.out.println("aa"+item.getId());
+                System.out.println("ss"+mainOrderIdToNumberMapping.get(item.getId()));
+                if (StringUtils.isNotBlank(mainOrderIdToNumberMapping.get(item.getId()))) {
+                    System.out.println(mainOrderIdToNumberMapping.get(item.getId()));
+                    item.setName(mainOrderIdToNumberMapping.get(item.getId()));
+                }
+            });
+        }
+        System.out.println(pos1);
+    }
+
+    @Test
+    public void test14() {
+        Optional<String> optional = Optional.empty();
+        System.out.println(optional.isPresent());
+    }
+    @Test
+    public void test15() {
+        PO po = new PO();
+        po.setId("id1");
+        po.setName("name1");
+        PO po1 = new PO();
+        po1.setId("id2");
+        po1.setName("name2");
+        List<PO> pos = new ArrayList<>();
+        pos.add(po);
+        pos.add(po1);
+
+        String collect = pos.stream().map(item -> item.getId()).collect(Collectors.joining());
+        System.out.println(collect);
+
+    }
+}
+
+@Data
+class DTO {
+    private String id;
+    private String name;
+
+    public DTO(PO po) {
+        this.id = po.getId();
+        this.name = po.getName();
+    }
+}
+
+@Data
+class PO {
+    private String id;
+    private String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PO)) return false;
+
+        PO po = (PO) o;
+
+        if (id != null ? !id.equals(po.id) : po.id != null) return false;
+        return name != null ? name.equals(po.name) : po.name == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pjx.test.essearch1.entity.Entity;
+import pjx.test.essearch1.entity.User;
 import pjx.test.essearch1.service.TestService;
 
 import java.io.IOException;
@@ -74,6 +75,52 @@ public class TestServiceImpl implements TestService {
         try {
             JestResult result = jestClient.execute(search);
             return result.getSourceAsObjectList(Entity.class);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void saveUser(User user) {
+        Index index = new Index.Builder(user).index(User.INDEX_NAME).type(User.TYPE).build();
+        try {
+            jestClient.execute(index);
+            LOGGER.info("ES 插入user完成");
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public void saveUser(List<User> userList) {
+        Bulk.Builder bulk = new Bulk.Builder();
+        for(User user : userList) {
+            Index index = new Index.Builder(user).index(User.INDEX_NAME).type(User.TYPE).build();
+            bulk.addAction(index);
+        }
+        try {
+            jestClient.execute(bulk.build());
+            LOGGER.info("ES bulk 插入user完成");
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<User> searchUser(String searchContent) {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        //searchSourceBuilder.query(QueryBuilders.queryStringQuery(searchContent));
+        //searchSourceBuilder.field("name");
+        searchSourceBuilder.query(QueryBuilders.matchQuery("name",searchContent));
+        Search search = new Search.Builder(searchSourceBuilder.toString())
+                .addIndex(User.INDEX_NAME).addType(User.TYPE).build();
+        try {
+            JestResult result = jestClient.execute(search);
+            return result.getSourceAsObjectList(User.class);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();

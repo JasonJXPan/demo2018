@@ -2,6 +2,9 @@ package com.pjx.demo2018.controller;
 
 import com.juqitech.service.utils.net.StatusCode;
 import com.juqitech.service.utils.query.*;
+import com.pjx.demo2018.aop.ReplaceAble;
+import com.pjx.demo2018.aop.SessionContextHolder;
+import com.pjx.demo2018.aop.SessionValidator;
 import com.pjx.demo2018.config.FavorProperties;
 import com.pjx.demo2018.config.My2Properties;
 import com.pjx.demo2018.dto.UserRequestDTO;
@@ -14,6 +17,8 @@ import com.pjx.demo2018.vo.MyPostXML;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -29,6 +35,8 @@ import java.util.List;
  */
 @RestController
 public class DemoController {
+
+    private static Logger logger = LoggerFactory.getLogger(DemoController.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -185,6 +193,22 @@ public class DemoController {
         }
         System.out.println(blank);
         System.out.println(myRequest);
+    }
+
+    @RequestMapping(value = "/test_advice", method = RequestMethod.GET)
+    @SessionValidator
+    public void testAdvice(@RequestParam(value = "id", defaultValue = "000") @ReplaceAble String id) {
+        logger.info("ttttttttt-id={}", id);
+        String id1 = SessionContextHolder.getContext().getId();
+        logger.info("ttttttttt11-id={}", id1);
+        try {
+//            Math.random()
+            long l = (long) (Math.random()*10);
+            logger.info(l +"aaaadddd");
+            Thread.sleep(l);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

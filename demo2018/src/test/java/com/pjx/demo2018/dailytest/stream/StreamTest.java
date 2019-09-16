@@ -2,6 +2,7 @@ package com.pjx.demo2018.dailytest.stream;
 
 import com.pjx.demo2018.dailytest.stream.dto.StreamTestDTO;
 import com.pjx.demo2018.dailytest.stream.po.StreamTestPO;
+import lombok.Data;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -105,4 +106,31 @@ public class StreamTest {
 
     }
 
+    @Test
+    public void test5() {
+        List<A> list = new ArrayList<>();
+        A a = new A();
+        a.setId("1");
+        a.setName("a");
+        A a1 = new A();
+        a1.setId("2");
+        a1.setName("a2");
+        list.add(a);
+        list.add(a1);
+        List<String> collect = list.stream().map(item -> item.getId()).collect(Collectors.toList());
+        System.out.println(collect);
+
+        List<String> myList = new ArrayList<>();
+        list.stream().forEach(item -> myList.add(item.getId()));
+        System.out.println(myList);
+
+    }
+
+
+    @Data
+    private class A{
+        private String id;
+        private String name;
+    }
 }
+

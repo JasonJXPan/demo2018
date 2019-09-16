@@ -23,10 +23,10 @@ public class EntityController {
     TestService cityESService;
 
     @RequestMapping(value="/save", method= RequestMethod.GET)
-    public String save(long id, String name) {
+    public String save(long id, String name, String creator) {
         System.out.println("save 接口");
         if(id>0 && StringUtils.isNotEmpty(name)) {
-            Entity newEntity = new Entity(id,name);
+            Entity newEntity = new Entity(id,name, creator);
             List<Entity> addList = new ArrayList<Entity>();
             addList.add(newEntity);
             cityESService.saveEntity(addList);

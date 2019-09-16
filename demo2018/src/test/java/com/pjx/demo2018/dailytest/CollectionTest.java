@@ -1,5 +1,6 @@
 package com.pjx.demo2018.dailytest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.*;
@@ -10,12 +11,21 @@ import java.util.*;
 public class CollectionTest {
     @Test
     public void test1(){
-        Set<String> set = null;
-        Set<String> all = new HashSet<>();
-        all.add("a");
-        all.add("B");
-        all.removeAll(set);
-        System.out.println(all);
+//        Set<String> set = null;
+//        Set<String> all = new HashSet<>();
+//        all.add("a");
+//        all.add("B");
+//        all.removeAll(set);
+//        System.out.println(all);
+
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        List<String> list1 = new ArrayList<>();
+        list1.add("1");
+        list.removeAll(list1);
+        System.out.println(list);
     }
 
     @Test
@@ -25,6 +35,28 @@ public class CollectionTest {
         System.out.println(list);
         list.addAll(Collections.emptyList());
         System.out.println(list);
+
+        List<String> ids = new ArrayList<>();
+        ids.add("1");
+        ids.add("2");
+        ids.add("3");
+
+        Map<String, String> map = new HashMap<>();
+        for (String id : ids) {
+            String x = null;
+            if (StringUtils.equals(id, "1")) {
+                 x = "a";
+            } else if (StringUtils.equals(id, "2")) {
+                x = "b";
+            }
+            if (x == null) {
+                System.out.println("continue");
+                continue;
+            }
+            map.put(x, x);
+        }
+        System.out.println(map);
+
     }
 
     @Test
@@ -49,6 +81,17 @@ public class CollectionTest {
         testMap.put(a1, a1);
         System.out.println(testMap);
     }
+
+    @Test
+    public void test4() {
+        List<String> strings = Arrays.asList("1", "2", "3");
+        ArrayList<String> strings1 = new ArrayList<>(strings);
+//        strings.remove(0);
+        strings1.remove(0);
+    }
+
+
+
     class A {
         private String x;
         private String y;
