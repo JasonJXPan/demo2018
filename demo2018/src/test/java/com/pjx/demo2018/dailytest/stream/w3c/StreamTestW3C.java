@@ -479,6 +479,7 @@ public class StreamTestW3C {
         System.out.println(collect7);
 
         Map<Employee.Gender, Long> collect8 = Employee.persons().stream().collect(Collectors.toMap(Employee::getGender, p -> 1L, (oldCount, newCount) -> oldCount + newCount));
+        System.out.println("collect8");
         System.out.println(collect8);
 
         Map<Employee.Gender, Employee> collect9 = Employee.persons().stream().collect(Collectors.toMap(Employee::getGender, Function.identity(), (oldPerson, newPerson) -> oldPerson.getIncome() > newPerson.getIncome() ? oldPerson : newPerson));

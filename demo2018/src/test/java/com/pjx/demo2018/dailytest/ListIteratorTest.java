@@ -186,5 +186,21 @@ public class ListIteratorTest {
         myList.add(1, "1");
     }
 
+    @Test
+    public void test8() {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        List<String> list1 = new ArrayList<>();
+        list1.add("2");
+        list1.add("3");
+        list1.add("4");
+        boolean b = list.retainAll(list1);
+        System.out.println(b);
+        System.out.println(list);
+        System.out.println(list1);
+
+    }
 
 }

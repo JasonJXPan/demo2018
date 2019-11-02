@@ -233,12 +233,12 @@ public class StringProcessTest {
     @Test
     public void test16() {
         String refundRatioPreDelimiter = "实际退款比例";
-        String refundRatioPostDelimiter = "%)";
-        String x = "用户原因-客户有责退款-(建议退款比例:85%,实际退款比例86%)";
+        String refundRatioPostDelimiter = "%";
+        String x = "卖家逾期回票（建议退款比例:100%,实际退款比例17%%）";
         System.out.println(StringUtils.substringBetween(x, refundRatioPreDelimiter, refundRatioPostDelimiter));
-        System.out.println(Integer.parseInt(StringUtils.substringBetween(x, refundRatioPreDelimiter, refundRatioPostDelimiter)));
-        System.out.println(Integer.parseInt(null));
-        System.out.println(StringUtils.equals(StringUtils.substringBetween(x, refundRatioPreDelimiter, refundRatioPostDelimiter), "null"));
+//        System.out.println(Integer.parseInt(StringUtils.substringBetween(x, refundRatioPreDelimiter, refundRatioPostDelimiter)));
+//        System.out.println(Integer.parseInt(null));
+//        System.out.println(StringUtils.equals(StringUtils.substringBetween(x, refundRatioPreDelimiter, refundRatioPostDelimiter), "null"));
     }
     @Data
     class AliJueCe {

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by juqi on 18/8/1.
@@ -18,7 +19,7 @@ public class ObjectOIDTest {
             System.out.println(ObjectOIDUtil.generateOID());
         }
         Map<String, String> map = new HashMap<>();
-        map.put("COMMON_ORDER", "摩天轮将通知卖家尽快为您出票，请留意订单状态变化及短信通知，感谢您的支持！");
+        map.put("COMMON_ORDER", "摩天轮将通知卖家尽快为您出票，请留意订单5状态变化及短信通知，感谢您的支持！");
         map.put("RESERVE_ORDER", "摩天轮将在主办开票后，通知卖家尽快为你出票，请留意订单状态变化及短信通知，感谢您的支持！");
         map.put("AGENT_ORDER", "");
         map.put("PRIME_CARD_ORDER", "更多会员福利等着您");
@@ -28,6 +29,7 @@ public class ObjectOIDTest {
 
     @Test
     public void test2(){
+        ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<> ();
         System.out.println(UUID.randomUUID().toString().replace("-", "").length());
         System.out.println(UUID.randomUUID().toString().replace("-", "").length());
         System.out.println(UUID.randomUUID().toString().replace("-", "").length());
@@ -36,10 +38,12 @@ public class ObjectOIDTest {
         List<String> list = new ArrayList<>();
         list.add(a);
         list.add(b);
+        System.out.println(list.subList(0, 3));
         System.out.println(list.contains("a"));
         System.out.println(list.contains("a1"));
         long x = 0L;
         x = test111();
+
     }
 
     public Long test111(){

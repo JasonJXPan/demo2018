@@ -44,4 +44,10 @@ public class DateTest {
     public void test3() {
         System.out.println(DateUtils.parseWebFormat("1564502400000"));
     }
+    @Test
+    public void test4() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 10);
+        System.out.println(calendar.getTime());
+    }
 }
