@@ -1,10 +1,13 @@
 package com.pjx.demo2018.dailytest;
 
 import com.alibaba.fastjson.JSON;
+import com.juqitech.service.utils.MD5Utils;
 import com.pjx.demo2018.dailytest.util.ObjectOIDUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import org.springframework.util.StopWatch;
 
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,10 +17,28 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ObjectOIDTest {
     @Test
-    public void test1(){
-        for (int i=0; i < 8; i++) {
+    public void test1() throws NoSuchAlgorithmException {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        long start = System.currentTimeMillis();
+        for (int i=0; i < 9; i++) {
             System.out.println(ObjectOIDUtil.generateOID());
         }
+        ObjectOIDUtil.generateOID();
+        stopWatch.stop();
+        System.out.println("stopWatch.getLastTaskTimeMillis()"+stopWatch.getLastTaskTimeMillis());
+        System.out.println("stopWatch.getLastTaskTimeMillis()"+stopWatch.getTotalTimeMillis());
+        System.out.println(System.currentTimeMillis() - start);
+        stopWatch.start();
+        start = System.currentTimeMillis();
+        for (int i=0; i < 80; i++) {
+            System.out.println(MD5Utils.string2MD5("properityDTO.getPropertyValue()"));
+        }
+        stopWatch.stop();
+        System.out.println("stopWatch.getLastTaskTimeMillis()"+stopWatch.getLastTaskTimeMillis());
+        System.out.println(System.currentTimeMillis() - start);
+
+//        StringUtils.equals(xxx, TicketForm)
         Map<String, String> map = new HashMap<>();
         map.put("COMMON_ORDER", "摩天轮将通知卖家尽快为您出票，请留意订单5状态变化及短信通知，感谢您的支持！");
         map.put("RESERVE_ORDER", "摩天轮将在主办开票后，通知卖家尽快为你出票，请留意订单状态变化及短信通知，感谢您的支持！");
@@ -25,8 +46,32 @@ public class ObjectOIDTest {
         map.put("PRIME_CARD_ORDER", "更多会员福利等着您");
         String s = JSON.toJSONString(map);
         System.out.println(s);
+
+        String x ="";
+//        System.out.println("adad DDDD".replace("DDDD", null));
     }
 
+    @Test
+    public void testWatch() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        stopWatch.stop();
+        System.out.println(stopWatch.getLastTaskTimeMillis());
+        stopWatch.start();
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        stopWatch.stop();
+        System.out.println(stopWatch.getLastTaskTimeMillis());
+        System.out.println(stopWatch.getTotalTimeMillis());
+    }
     @Test
     public void test2(){
         ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<> ();
