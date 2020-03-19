@@ -9,9 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by juqi on 18/7/30.
@@ -19,11 +21,46 @@ import java.util.Map;
 public class StringProcessTest {
 
     @Test
+    public void test() {
+        String content ="取票链接< https://q.tking.cn/5df3278b069b3e751c7bd7c4&472003 >。您订购的 380票面 4 张 【上海站】天空之城——久石让宫崎骏经典作品精选交响音乐会 2019-12-13 19:30 东方艺术中心-音乐厅 请提前一小时至 上海市浦东新区花木街道丁香路上海东方艺术中心，联系商家：东方娱乐，您可点击短信链接或打开摩天轮APP订单联系卖家。 进行取票！温馨提醒：由于现场票务特殊性，最晚取票时间截止为开场后半小时。(摩天轮要求商家不能以任何名义与用户私下协商退补票款，如遇问题，请联系客服热线：10102266)";
+
+        System.out.println(content.contains("http"));
+
+        List<OrderPO> dailyOrderStatistics = new ArrayList<>();
+        OrderPO po1 = new OrderPO();
+        po1.setOrderOID("11");
+        po1.setOrderStatus("UNPAID");
+        OrderPO po2 = new OrderPO();
+        po2.setOrderOID("112");
+        po2.setOrderStatus("UNPAID");
+        OrderPO po3 = new OrderPO();
+        po3.setOrderOID("1123");
+        po3.setOrderStatus("CANCELED");
+        dailyOrderStatistics.add(po1);
+        dailyOrderStatistics.add(po2);
+        dailyOrderStatistics.add(po3);
+        Map<String, Long> collect =
+                dailyOrderStatistics.stream()
+                        .collect(Collectors.groupingBy(OrderPO::getOrderStatus, Collectors.counting()));
+        Long unPaidCount = collect.get("UNPAID");
+        Long canceledCount = collect.get("CANCELED");
+        System.out.println(unPaidCount);
+        System.out.println(canceledCount);
+    }
+
+    @Test
     public void test1(){
-        String content = "12345678901234567890";
-        System.out.println(StringProcessUtil.getBreviaryValue(content, 20, ".."));
-        System.out.println(StringProcessUtil.getBreviaryValue(content, 15, ".."));
-        System.out.println(StringProcessUtil.getBreviaryValue(content, 30, ".."));
+
+        String content = "取票链接< 取票URL&取票CODE >,取票码<取票CODE>。 您订购的13票面 1 张 【测试演出】猪猪侠之时间去哪儿 2019-12-16\n" +
+                " 23:00 【测试场馆】灵岩山大门口 => [125564]，烦请提前一小时到达入口取票，联系商家：测试账号01, 您可点击短信链接或打开摩天轮APP订单联系卖家。 进行取票！温馨提醒\n" +
+                "：由于现场票务特殊性，最晚取票时间截止为开场后半小时。(摩天轮要求商家不能以任何名义与用户私下协商退补票款，如遇问题，请联系客服热线：10102266)";
+        String actualContent = content.replace("取票URL", "http://sadfasf.com")
+                .replace("取票CODE", "2324");
+        System.out.println(actualContent);
+//        String content = "12345678901234567890";
+//        System.out.println(StringProcessUtil.getBreviaryValue(content, 20, ".."));
+//        System.out.println(StringProcessUtil.getBreviaryValue(content, 15, ".."));
+//        System.out.println(StringProcessUtil.getBreviaryValue(content, 30, ".."));
     }
 
     @Test
@@ -239,6 +276,34 @@ public class StringProcessTest {
 //        System.out.println(Integer.parseInt(StringUtils.substringBetween(x, refundRatioPreDelimiter, refundRatioPostDelimiter)));
 //        System.out.println(Integer.parseInt(null));
 //        System.out.println(StringUtils.equals(StringUtils.substringBetween(x, refundRatioPreDelimiter, refundRatioPostDelimiter), "null"));
+    }
+
+    @Test
+    public void test17() {
+        String x ="123 456";
+        System.out.println(StringUtils.remove(x, " "));
+//        String s2 = new StringBuilder("ja1")
+//                .append("va").toString();
+//        System.out.println(s2.intern() == s2);
+//        String s1 = new StringBuilder("go")
+//                .append("od").toString();
+//        System.out.println(s1.intern() == s1);
+
+//        System.out.println("----------");
+//        String s1 = "Programming";
+//        String s2 = new String("Programming");
+//        String s3 = "Program";
+//        String s4 = "ming";
+//        String s5 = "Program" + "ming";
+//        String s6 = s3 + s4;
+//        System.out.println(s1 == s2);
+//        System.out.println(s1 == s5);
+//        System.out.println(s1 == s6);
+//        System.out.println(s1 == s6.intern());
+//        System.out.println(s2 == s2.intern());
+
+
+
     }
     @Data
     class AliJueCe {
