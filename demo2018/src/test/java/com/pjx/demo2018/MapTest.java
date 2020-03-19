@@ -28,5 +28,6 @@ public class MapTest {
         ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<>();
         //key和value都不允许添加null
 //        concurrentHashMap.put(null, null);
+        concurrentHashMap.get(null);
     }
 }
