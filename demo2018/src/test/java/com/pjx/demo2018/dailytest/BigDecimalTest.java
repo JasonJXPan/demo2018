@@ -2,6 +2,7 @@ package com.pjx.demo2018.dailytest;
 
 import com.alibaba.fastjson.JSON;
 import com.juqitech.service.utils.BigDecimalUtil;
+import com.juqitech.service.utils.DateUtils;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 /**
  * Created by juqi on 18/9/6.
@@ -161,6 +163,18 @@ public class BigDecimalTest {
     }
 
     @Test
+    public void test234() {
+        String s = "ssdfx";
+        try {
+            Long.parseLong(s);
+        } catch (Exception e) {
+            long pow = (long)Math.pow(10, s.length());
+            System.out.println(pow);
+        }
+
+    }
+
+    @Test
     public void test17() {
         DecimalFormat ORDER_NUMBER_FORMAT = new DecimalFormat("00000");
         String countStr = ORDER_NUMBER_FORMAT.format(9998);
@@ -179,6 +193,84 @@ public class BigDecimalTest {
         System.out.println(x(countStr3));
     }
 
+    @Test
+    public void test123() {
+        String createTimeFrom = DateUtils.getNewFormatDateString(DateUtils.addHours(Calendar.getInstance().getTime(), -15));
+        String createTimeEnd = DateUtils.getNewFormatDateString(Calendar.getInstance().getTime());
+        System.out.println(createTimeFrom);
+        System.out.println(createTimeEnd);
+//        System.out.println();
+        Pattern pattern = Pattern.compile("^[\\d]*$");
+        int x = 1685;
+        String s = x2(x);
+        System.out.println(s);
+        s = "20001011425";
+//        System.out.println(s.substring(0,1));
+        System.out.println(pattern.matcher(s.substring(0,1)).matches());
+//        s = s.substring(1);
+        System.out.println(pattern.matcher(s).matches());
+        StringBuilder reverse = new StringBuilder();
+        reverse.append(s.charAt(2)).append(s.charAt(5)).append(s.charAt(6)).append(s.substring(9));
+        int i = Integer.parseInt(reverse.toString());
+        System.out.println(i);
+        System.out.println(x ==i);
+    }
+
+   private String validateNumber(String orderNumber) {
+       Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+//       while (pattern.matcher(orderNumber))
+
+       return  null;
+   }
+
+
+    public String x2(int count) {
+        int NUMBER_OFFSET = 100000;
+        String countStr = null;
+        if (count < NUMBER_OFFSET) {
+            DecimalFormat ORDER_NUMBER_FORMAT = new DecimalFormat("00000");
+            countStr = ORDER_NUMBER_FORMAT.format(count);
+        } else {
+            countStr = String.valueOf(count);
+        }
+        DecimalFormat MONTH_DAY_FORMAT = new DecimalFormat("00");
+        Calendar today = Calendar.getInstance();
+        String yearStr = String.valueOf(today.get(Calendar.YEAR));
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("T");
+        buffer.append(yearStr.charAt(2)).append(yearStr.charAt(3));
+        buffer.append(countStr.charAt(0));
+        buffer.append(MONTH_DAY_FORMAT.format(today.get(Calendar.MONTH) + 1));
+        buffer.append(countStr.charAt(1)).append(countStr.charAt(2));
+        buffer.append(MONTH_DAY_FORMAT.format(today.get(Calendar.DAY_OF_MONTH)));
+        buffer.append(countStr.substring(3));
+//        System.out.println(countStr.substring(3)+"s");
+        return buffer.toString();
+    }
+
+    public String x1(int count) {
+        int NUMBER_OFFSET = 100000;
+        String countStr = null;
+        if (count < NUMBER_OFFSET) {
+            DecimalFormat ORDER_NUMBER_FORMAT = new DecimalFormat("00000");
+            countStr = ORDER_NUMBER_FORMAT.format(count);
+        } else {
+            countStr = String.valueOf(count);
+        }
+        DecimalFormat MONTH_DAY_FORMAT = new DecimalFormat("00");
+        Calendar today = Calendar.getInstance();
+        String yearStr = String.valueOf(today.get(Calendar.YEAR));
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(yearStr.charAt(2)).append(yearStr.charAt(3));
+        buffer.append(countStr.charAt(0));
+        buffer.append(MONTH_DAY_FORMAT.format(today.get(Calendar.MONTH) + 1));
+        buffer.append(countStr.charAt(1)).append(countStr.charAt(2));
+        buffer.append(MONTH_DAY_FORMAT.format(today.get(Calendar.DAY_OF_MONTH)));
+        buffer.append(countStr.substring(3));
+//        System.out.println(countStr.substring(3)+"s");
+        return buffer.toString();
+    }
+
     public String x(String countStr) {
         DecimalFormat MONTH_DAY_FORMAT = new DecimalFormat("00");
         Calendar today = Calendar.getInstance();
@@ -190,7 +282,7 @@ public class BigDecimalTest {
         buffer.append(countStr.charAt(1)).append(countStr.charAt(2));
         buffer.append(MONTH_DAY_FORMAT.format(today.get(Calendar.DAY_OF_MONTH)));
         buffer.append(countStr.substring(3));
-        System.out.println(countStr.substring(3)+"s");
+//        System.out.println(countStr.substring(3)+"s");
         return buffer.toString();
     }
 

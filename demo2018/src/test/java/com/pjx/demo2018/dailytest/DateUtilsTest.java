@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by juqi on 18/10/18.
@@ -100,6 +103,36 @@ public class DateUtilsTest {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void test5() throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = "2020-02-16 11:00";
+        String datex = "2020-02-16 11:00:00";
+        Date date1 = DateUtils.parseNoSecondFormat(date);
+        Date date2 = DateUtils.parseDateNewFormat(datex);
+        System.out.println(date1);
+        System.out.println(date2);
+
+        long diffMinutes = DateUtils.getDiffMinutes(date1, date2);
+        System.out.println(date1.equals(date2));
+        System.out.println(diffMinutes);
+
+        System.out.println(DateUtils.getNoSecondDateString(date1));
+
+        String xingQiFormatNoSecond = DateUtils.getXingQiFormatNoSecond(date1);
+        System.out.println(xingQiFormatNoSecond);
+
+//        ExecutorService executorService = Executors.newFixedThreadPool(10);
+////        executorService.
+//        ThreadLocal
+
+    }
+
+    @Test
+    public void test6() {
+        System.out.println("2"+7);
     }
 
 }
