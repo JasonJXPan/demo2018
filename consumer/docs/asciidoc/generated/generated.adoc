@@ -1,0 +1,177 @@
+= 测试API
+
+
+[[_overview]]
+== 概览
+测试API
+
+
+=== URI scheme
+[%hardbreaks]
+__域名__ : localhost:8090
+__基础路径__ : /
+
+
+=== 标签
+
+* my-controller : My Controller
+* test-controller : Test Controller
+
+
+
+
+[[_paths]]
+== 资源
+
+[[_my-controller_resource]]
+=== My-controller
+My Controller
+
+
+[[_getusersbyidusingget]]
+==== 根据id查询用户
+....
+GET /v1/users/{userId}
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**userId** +
+__必填__|userId|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_uservo,userVo>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/v1/users/string
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "age" : 0,
+  "userId" : "string",
+  "userName" : "string"
+}
+----
+
+
+[[_test-controller_resource]]
+=== Test-controller
+Test Controller
+
+
+[[_echousingget]]
+==== echo
+....
+GET /echo/{str}
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**str** +
+__必填__|str|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|string
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/echo/string
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"string"
+----
+
+
+
+
+[[_definitions]]
+== 定义
+
+[[_uservo]]
+=== userVo
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**age** +
+__可选__|用户年纪 +
+**样例** : `0`|integer (int32)
+|**userId** +
+__可选__|用户id +
+**样例** : `"string"`|string
+|**userName** +
+__可选__|用户名 +
+**样例** : `"string"`|string
+|===
+
+
+
+
+
